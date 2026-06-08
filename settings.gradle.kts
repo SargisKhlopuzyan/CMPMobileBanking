@@ -35,3 +35,8 @@ plugins {
 include(":androidApp")
 include(":desktopApp")
 include(":shared")
+include(":core")
+include(":designsystem")
+include(":feature:authentication:ui")
+include(":feature:authentication:domain")
+include(":feature:authentication:data")
