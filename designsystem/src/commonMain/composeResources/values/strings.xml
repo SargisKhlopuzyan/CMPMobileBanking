@@ -23,4 +23,22 @@
     <string name="pages">Pages</string>
     <string name="languages">Languages</string>
     <string name="synopsis">Synopsis</string>
+
+    <string name="transfer_to_account">Transfer to Account</string>
+    <string name="transfer_to_card">Transfer to Card</string>
+    <string name="transfer_via_contact">Transfer via Contact</string>
+    <string name="transfer_arca_pay">Transfer ArcaPay</string>
+    <string name="international_transfer">International Transfer</string>
+    <string name="transfer_in_rub">Transfer in RUB</string>
+    <string name="currency_exchange">Currency exchange</string>
+    <string name="deposit_replenishment">Deposit Replenishment</string>
+    <string name="utility">Utility</string>
+    <string name="internet_and_tv">Internet and TV</string>
+    <string name="car">Car</string>
+    <string name="public_services">Public services</string>
+    <string name="other_payments">Other payments</string>
+    <string name="loan_repayment">Loan Repayment</string>
+    <string name="tuition_fee">Tuition fee</string>
+<!--    <string name="transfer">Transfer</string>-->
+<!--    <string name="transfer">Transfer</string>-->
 </resources>
