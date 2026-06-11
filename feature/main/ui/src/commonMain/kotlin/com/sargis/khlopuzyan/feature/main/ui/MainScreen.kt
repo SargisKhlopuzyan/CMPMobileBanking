@@ -280,7 +280,7 @@ private val mockTransactions = listOf(
         toAccount = "DE89 3704 0044 0532 0130 00",
         rate = "0.975",
         aim = "Currency exchange"
-    ),    TransferToAccount(
+    ), TransferToAccount(
         status = TransactionStatus.CONFIRMED,
         amount = 250.0,
         currency = "USD",

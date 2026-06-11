@@ -1,14 +1,10 @@
 package com.sargis.khlopuzyan.feature.main.ui.transactions
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.sargis.khlopuzyan.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.designsystem.resources.compose_multiplatform
 import com.sargis.khlopuzyan.feature.main.domain.transactions.CurrencyExchange
