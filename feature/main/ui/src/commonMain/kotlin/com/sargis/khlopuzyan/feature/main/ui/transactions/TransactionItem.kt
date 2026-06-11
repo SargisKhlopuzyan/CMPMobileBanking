@@ -30,8 +30,10 @@ import com.sargis.khlopuzyan.designsystem.theme.LightGrey
 import com.sargis.khlopuzyan.designsystem.theme.Red
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionStatus
 import com.sargis.khlopuzyan.feature.main.ui.util.isConfirmed
+import com.sargis.khlopuzyan.feature.main.ui.util.localizedRes
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun TransactionItem(
@@ -53,7 +55,7 @@ fun TransactionItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .height(64.dp)
             .background(MaterialTheme.colorScheme.background)
             .combinedClickable(
                 onClick = onItemClick,
@@ -90,33 +92,37 @@ fun TransactionItem(
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth().weight(1f).padding(end = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically)
+                verticalArrangement = Arrangement.Center
             ) {
                 Row {
                     Text(
                         modifier = Modifier.weight(1f),
                         text = title,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
                         text = "$amount $currency",
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Row {
                     Text(
                         modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodySmall,
                         text = subTitle,
                         color = LightGrey
                     )
                     Text(
-                        text = status.name,
+                        text = stringResource(status.localizedRes()),
+                        style = MaterialTheme.typography.bodySmall,
                         color = if (status.isConfirmed()) Green else Red
                     )
                 }
             }
 
-            HorizontalDivider()
+            HorizontalDivider(thickness = 0.5.dp, color = LightGrey)
         }
     }
 }
@@ -128,7 +134,7 @@ private fun TransactionItemPreview() {
         TransactionItem(
             title = "Transfer to Card",
             subTitle = "Sargis Khlopuzyan",
-            amount = "$120.00",
+            amount = "120.00",
             currency = "AMD",
             status = TransactionStatus.CONFIRMED,
             iconRes = SharedRes.drawable.compose_multiplatform,
@@ -144,7 +150,7 @@ private fun TransactionItemDarkPreview() {
         TransactionItem(
             title = "Transfer to Card",
             subTitle = "Sargis Khlopuzyan",
-            amount = "$120.00",
+            amount = "120.00",
             currency = "AMD",
             status = TransactionStatus.CONFIRMED,
             iconRes = SharedRes.drawable.compose_multiplatform,

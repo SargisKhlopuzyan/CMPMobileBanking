@@ -41,4 +41,8 @@
     <string name="tuition_fee">Tuition fee</string>
 <!--    <string name="transfer">Transfer</string>-->
 <!--    <string name="transfer">Transfer</string>-->
+
+    <string name="pending">Pending</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="refused">Refused</string>
 </resources>

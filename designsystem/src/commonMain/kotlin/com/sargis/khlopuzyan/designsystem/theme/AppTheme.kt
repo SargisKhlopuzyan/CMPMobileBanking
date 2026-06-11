@@ -10,11 +10,13 @@ import kotlinx.serialization.descriptors.PrimitiveKind
 
 private val LightColors = lightColorScheme(
     primary = LightBlue,
+    primaryContainer = White,
     background = White,
     onBackground = DarkGrey
 )
 private val DarkColors = darkColorScheme(
     primary = LightBlue,
+    primaryContainer = DarkGrey,
     background = DarkGrey,
     onBackground = White
 )
@@ -28,6 +30,7 @@ fun AppTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        typography = getLotoTypography(),
         content = content
     )
 }

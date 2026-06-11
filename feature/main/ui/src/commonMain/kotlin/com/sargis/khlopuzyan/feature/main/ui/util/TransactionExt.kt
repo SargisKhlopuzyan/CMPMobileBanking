@@ -2,7 +2,10 @@ package com.sargis.khlopuzyan.feature.main.ui.util
 
 import com.sargis.khlopuzyan.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.designsystem.resources.compose_multiplatform
+import com.sargis.khlopuzyan.designsystem.resources.confirmed
 import com.sargis.khlopuzyan.designsystem.resources.currency_exchange
+import com.sargis.khlopuzyan.designsystem.resources.pending
+import com.sargis.khlopuzyan.designsystem.resources.refused
 import com.sargis.khlopuzyan.designsystem.resources.transfer_to_account
 import com.sargis.khlopuzyan.designsystem.resources.transfer_to_card
 import com.sargis.khlopuzyan.feature.main.domain.transactions.CurrencyExchange
@@ -25,6 +28,14 @@ fun Transaction.getTransactionName(): StringResource {
 
 fun TransactionStatus.isConfirmed(): Boolean {
     return this == TransactionStatus.CONFIRMED
+}
+
+fun TransactionStatus.localizedRes(): StringResource {
+    return when (this) {
+        TransactionStatus.PENDING -> SharedRes.string.pending
+        TransactionStatus.CONFIRMED -> SharedRes.string.confirmed
+        TransactionStatus.REFUSED -> SharedRes.string.refused
+    }
 }
 
 fun Transaction.getTransactionIcon(): DrawableResource {

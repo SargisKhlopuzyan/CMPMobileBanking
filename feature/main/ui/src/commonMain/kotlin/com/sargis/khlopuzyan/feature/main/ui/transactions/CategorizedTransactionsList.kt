@@ -13,6 +13,7 @@ import com.sargis.khlopuzyan.feature.main.domain.transactions.Transaction
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionStatus
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransferToAccount
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransferToCard
+import com.sargis.khlopuzyan.designsystem.unit.formatAsAmount
 import com.sargis.khlopuzyan.feature.main.ui.util.getTransactionName
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
@@ -35,7 +36,7 @@ fun CategorizedTransactionsList(
             }
             items(transactions) { transaction ->
                 var iconRes: DrawableResource
-                var amount = 0.0
+                var amount = ""
                 var currency = ""
                 var status: TransactionStatus = TransactionStatus.CONFIRMED
                 var title: String
@@ -45,7 +46,7 @@ fun CategorizedTransactionsList(
                         iconRes = SharedRes.drawable.compose_multiplatform
                         title = transaction.aim
                         subTitle = transaction.aim
-                        amount = transaction.toAmount
+                        amount = transaction.toAmount.formatAsAmount()
                         currency = transaction.toCurrency
                         status = transaction.status
                     }
@@ -53,7 +54,7 @@ fun CategorizedTransactionsList(
                         iconRes = SharedRes.drawable.compose_multiplatform
                         title = transaction.aim
                         subTitle = transaction.beneficiaryName
-                        amount = transaction.amount
+                        amount = transaction.amount.formatAsAmount()
                         currency = transaction.currency
                         status = transaction.status
                     }
@@ -61,7 +62,7 @@ fun CategorizedTransactionsList(
                         iconRes = SharedRes.drawable.compose_multiplatform
                         title = transaction.aim
                         subTitle = transaction.beneficiaryName
-                        amount = transaction.amount
+                        amount = transaction.amount.formatAsAmount()
                         currency = transaction.currency
                         status = transaction.status
                     }
@@ -69,7 +70,7 @@ fun CategorizedTransactionsList(
                         iconRes = SharedRes.drawable.compose_multiplatform
                         title = transaction.aim
                         subTitle = stringResource(transaction.getTransactionName())
-                        amount = transaction.amount
+                        amount = transaction.amount.formatAsAmount()
                         currency = transaction.currency
                         status = transaction.status
                     }
@@ -80,7 +81,7 @@ fun CategorizedTransactionsList(
                     isDarkTheme = isSystemInDarkTheme(),
                     title = title,
                     subTitle = subTitle,
-                    amount = amount.toString(),
+                    amount = amount,
                     currency = currency,
                     status = status
                 )
