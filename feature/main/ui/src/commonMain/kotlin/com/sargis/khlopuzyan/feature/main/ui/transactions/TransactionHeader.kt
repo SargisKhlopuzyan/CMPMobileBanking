@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sargis.khlopuzyan.designsystem.theme.LightGrey
+import com.sargis.khlopuzyan.designsystem.theme.Grey
 
 @Composable
 fun TransactionHeader(
@@ -18,7 +18,7 @@ fun TransactionHeader(
     Text(
         text = text,
         style = MaterialTheme.typography.bodyMedium,
-        color = LightGrey,
+        color = Grey,
         modifier = modifier.fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 12.dp, vertical = 4.dp)

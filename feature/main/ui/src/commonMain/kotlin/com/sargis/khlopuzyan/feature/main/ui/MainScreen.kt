@@ -112,15 +112,15 @@ private val mockTransactions = listOf(
     ),
     TransferToAccount(
         status = TransactionStatus.CONFIRMED,
-        amount = 200050.0,
-        currency = "USD",
-        commission = "0.50",
+        amount = 100805425780.0,
+        currency = "AMD",
+        commission = "5780.50",
         transactionNumber = 1003,
         date = "11 Jun 2026",
         account = "1234 5678 9012 3456",
         beneficiaryAccount = "9876 5432 1098 7654",
         beneficiaryBank = "Acme Bank",
-        beneficiaryName = "Jane Smith",
+        beneficiaryName = "SARGIS KHLOPUZYAN HRACHIKI",
         aim = "Family transfer"
     ),
     TransferToCard(

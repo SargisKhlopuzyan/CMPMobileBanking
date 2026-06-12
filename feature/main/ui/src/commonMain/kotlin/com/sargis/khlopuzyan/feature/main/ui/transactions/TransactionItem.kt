@@ -3,6 +3,7 @@ package com.sargis.khlopuzyan.feature.main.ui.transactions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,12 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sargis.khlopuzyan.designsystem.checkbox.RoundedCheckbox
@@ -26,7 +30,6 @@ import com.sargis.khlopuzyan.designsystem.resources.compose_multiplatform
 import com.sargis.khlopuzyan.designsystem.theme.AppTheme
 import com.sargis.khlopuzyan.designsystem.theme.Green
 import com.sargis.khlopuzyan.designsystem.theme.Grey
-import com.sargis.khlopuzyan.designsystem.theme.LightGrey
 import com.sargis.khlopuzyan.designsystem.theme.Red
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionStatus
 import com.sargis.khlopuzyan.feature.main.ui.util.isConfirmed
@@ -86,43 +89,54 @@ fun TransactionItem(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth().weight(1f).padding(end = 12.dp),
-                verticalArrangement = Arrangement.Center
+        Box(modifier = Modifier.fillMaxSize()) {
+            Row(
+                modifier = Modifier.fillMaxSize().padding(end = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Row {
+                Column(
+                    modifier = Modifier.wrapContentHeight().weight(1f)
+                        .padding(end = 4.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text(
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.wrapContentHeight().fillMaxWidth(),
                         text = title,
                         style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         color = MaterialTheme.colorScheme.onBackground
                     )
+                    Text(
+                        modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+                        style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        text = subTitle,
+                        color = Grey
+                    )
+                }
+                Column(
+                    modifier = Modifier.wrapContentSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
                     Text(
                         text = "$amount $currency",
                         style = MaterialTheme.typography.bodyMedium,
+                        maxLines = 1,
                         color = MaterialTheme.colorScheme.onBackground
-                    )
-                }
-                Row {
-                    Text(
-                        modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.bodySmall,
-                        text = subTitle,
-                        color = LightGrey
                     )
                     Text(
                         text = stringResource(status.localizedRes()),
                         style = MaterialTheme.typography.bodySmall,
+                        maxLines = 1,
                         color = if (status.isConfirmed()) Green else Red
                     )
                 }
             }
 
-            HorizontalDivider(thickness = 0.5.dp, color = LightGrey)
+            HorizontalDivider(thickness = 0.3.dp, color = Grey)
         }
     }
 }

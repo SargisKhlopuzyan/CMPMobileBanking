@@ -2,22 +2,20 @@ package com.sargis.khlopuzyan.designsystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import kotlinx.serialization.descriptors.PrimitiveKind
 
 private val LightColors = lightColorScheme(
     primary = LightBlue,
     primaryContainer = White,
     background = White,
-    onBackground = DarkGrey
+    onBackground = DarkGreyBackground
 )
 private val DarkColors = darkColorScheme(
     primary = LightBlue,
-    primaryContainer = DarkGrey,
-    background = DarkGrey,
+    primaryContainer = DarkGreyBackground,
+    background = DarkGreyBackground,
     onBackground = White
 )
 
