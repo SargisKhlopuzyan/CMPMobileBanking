@@ -1,12 +1,14 @@
 package com.sargis.khlopuzyan.feature.main.domain.transactions
 
 data class PoliceAdministrativeFine(
-    val status: TransactionStatus,
-    val amount: Double,
-    val currency: String,
-    val commission: String,
-    val transactionNumber: Int,
+    override val transactionNumber: Int,
     override val date: String,
+    override val transactionType: TransactionType,
+    override val transactionCategory: TransactionCategory,
+    override val transactionStatus: TransactionStatus,
+    val amount: Double,
+    val currency: Currency,
+    val commission: String,
     val decreeNumber: Int,
     val fullName: String,
     val beneficiaryAccount: String,

@@ -16,7 +16,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.sargis.khlopuzyan.feature.main.ui"
+        namespace = "com.sargis.khlopuzyan.core.ui"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -29,6 +29,21 @@ kotlin {
         withHostTest {
             isIncludeAndroidResources = true
         }
+//        compileSdk {
+//            version = release(36) {
+//                minorApiLevel = 1
+//            }
+//        }
+//        minSdk = 24
+//
+//        withHostTestBuilder {
+//        }
+//
+//        withDeviceTestBuilder {
+//            sourceSetTreeName = "test"
+//        }.configure {
+//            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        }
     }
 
     // For iOS targets, this is also where you should
@@ -38,10 +53,10 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "feature:main:uiKit"
+    val xcfName = "core:uiKit"
 
     listOf(
-        //iosX64(),
+        // iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -59,13 +74,8 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
-
-                implementation(projects.core.ui)
-                implementation(projects.designsystem)
-                implementation(projects.feature.main.domain)
 
                 implementation(project.dependencies.platform(libs.compose.bom))
 
@@ -75,7 +85,7 @@ kotlin {
                 implementation(libs.compose.material.icons)
                 implementation(libs.compose.ui)
                 implementation(libs.compose.components.resources)
-                // implementation(libs.compose.uiTooling)
+                //                implementation(libs.compose.uiTooling)
                 implementation(libs.compose.uiToolingPreview)
                 implementation(libs.androidx.lifecycle.viewmodelCompose)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -93,17 +103,16 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
-                implementation(libs.compose.uiToolingPreview)
             }
         }
 
-        //        getByName("androidDeviceTest") {
-        //            dependencies {
-        //                implementation(libs.androidx.core)
-        //                implementation(libs.androidx.runner)
-        //                implementation(libs.androidx.testExt.junit)
-        //            }
-        //        }
+//        getByName("androidDeviceTest") {
+//            dependencies {
+//                implementation(libs.androidx.core)
+//                implementation(libs.androidx.runner)
+//                implementation(libs.androidx.testExt.junit)
+//            }
+//        }
 
         iosMain {
             dependencies {
@@ -115,7 +124,6 @@ kotlin {
             }
         }
     }
-
 }
 
 dependencies {

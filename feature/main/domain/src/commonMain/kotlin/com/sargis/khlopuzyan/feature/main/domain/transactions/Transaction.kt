@@ -1,8 +1,9 @@
 package com.sargis.khlopuzyan.feature.main.domain.transactions
 
-sealed class Transaction(
-    transactionType: TransactionType,
-    transactionStatus: TransactionStatus,
-    transactionCategory: TransactionCategory,
-    open val date: String = ""
-)
+sealed class Transaction {
+    abstract val transactionNumber: Int
+    abstract val date: String
+    abstract val transactionType: TransactionType
+    abstract val transactionStatus: TransactionStatus
+    abstract val transactionCategory: TransactionCategory
+}

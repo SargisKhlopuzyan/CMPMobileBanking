@@ -1,43 +1,22 @@
 package com.sargis.khlopuzyan.cmpmobilebanking
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.sargis.khlopuzyan.feature.main.ui.MainScreen
+import com.sargis.khlopuzyan.designsystem.theme.AppTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
+    AppTheme {
+//        Column(
+//            modifier = Modifier
+//                .background(MaterialTheme.colorScheme.primaryContainer)
+//                .safeContentPadding()
+//                .fillMaxSize(),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//        ) {
             MainScreen()
-
-            //            var showContent by remember { mutableStateOf(false) }
-            //            Button(onClick = { showContent = !showContent }) {
-            //                Text("Click me!")
-            //            }
-            //            AnimatedVisibility(showContent) {
-            //                val greeting = remember { Greeting().greet() }
-            //                Column(
-            //                    modifier = Modifier.fillMaxWidth(),
-            //                    horizontalAlignment = Alignment.CenterHorizontally,
-            //                ) {
-            //                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-            //                    Text("Compose: $greeting")
-            //                }
-            //            }
-        }
+//        }
     }
 }

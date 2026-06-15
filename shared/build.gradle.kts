@@ -42,6 +42,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
         }
         commonMain.dependencies {
+            implementation(projects.designsystem)
             implementation(projects.feature.main.ui)
 
             implementation(libs.compose.runtime)

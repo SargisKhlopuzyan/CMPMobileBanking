@@ -5,23 +5,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.sargis.khlopuzyan.designsystem.resources.SharedRes
-import com.sargis.khlopuzyan.designsystem.resources.compose_multiplatform
-import com.sargis.khlopuzyan.feature.main.domain.transactions.CurrencyExchange
-import com.sargis.khlopuzyan.feature.main.domain.transactions.PoliceAdministrativeFine
-import com.sargis.khlopuzyan.feature.main.domain.transactions.Transaction
-import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionStatus
-import com.sargis.khlopuzyan.feature.main.domain.transactions.TransferToAccount
-import com.sargis.khlopuzyan.feature.main.domain.transactions.TransferToCard
-import com.sargis.khlopuzyan.designsystem.unit.formatAsAmount
-import com.sargis.khlopuzyan.feature.main.ui.util.getTransactionName
-import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CategorizedTransactionsList(
     modifier: Modifier = Modifier,
-    transactions: List<Transaction>,
+    transactions: List<TransactionListItem>,
 ) {
     LazyColumn(modifier) {
         transactions.sortedBy {
@@ -35,55 +23,10 @@ fun CategorizedTransactionsList(
                 )
             }
             items(transactions) { transaction ->
-                var iconRes: DrawableResource
-                var amount = ""
-                var currency = ""
-                var status: TransactionStatus = TransactionStatus.CONFIRMED
-                var title: String
-                var subTitle: String
-                when (transaction) {
-                    is CurrencyExchange -> {
-                        iconRes = SharedRes.drawable.compose_multiplatform
-                        title = transaction.aim
-                        subTitle = transaction.aim
-                        amount = transaction.toAmount.formatAsAmount()
-                        currency = transaction.toCurrency
-                        status = transaction.status
-                    }
-                    is PoliceAdministrativeFine -> {
-                        iconRes = SharedRes.drawable.compose_multiplatform
-                        title = transaction.aim
-                        subTitle = transaction.beneficiaryName
-                        amount = transaction.amount.formatAsAmount()
-                        currency = transaction.currency
-                        status = transaction.status
-                    }
-                    is TransferToAccount -> {
-                        iconRes = SharedRes.drawable.compose_multiplatform
-                        title = transaction.aim
-                        subTitle = transaction.beneficiaryName
-                        amount = transaction.amount.formatAsAmount()
-                        currency = transaction.currency
-                        status = transaction.status
-                    }
-                    is TransferToCard -> {
-                        iconRes = SharedRes.drawable.compose_multiplatform
-                        title = transaction.aim
-                        subTitle = stringResource(transaction.getTransactionName())
-                        amount = transaction.amount.formatAsAmount()
-                        currency = transaction.currency
-                        status = transaction.status
-                    }
-                }
                 TransactionItem(
                     modifier = Modifier.fillParentMaxWidth(),
-                    iconRes = iconRes,
                     isDarkTheme = isSystemInDarkTheme(),
-                    title = title,
-                    subTitle = subTitle,
-                    amount = amount,
-                    currency = currency,
-                    status = status
+                    transactionListItem = transaction,
                 )
             }
         }

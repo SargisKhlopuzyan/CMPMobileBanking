@@ -33,6 +33,8 @@
     <string name="currency_exchange">Currency exchange</string>
     <string name="deposit_replenishment">Deposit Replenishment</string>
     <string name="utility">Utility</string>
+    <string name="utility_payment">Utility Payment</string>
+    <string name="utility_group_payment">Utility Group Payment</string>
     <string name="internet_and_tv">Internet and TV</string>
     <string name="car">Car</string>
     <string name="public_services">Public services</string>
@@ -40,9 +42,19 @@
     <string name="loan_repayment">Loan Repayment</string>
     <string name="tuition_fee">Tuition fee</string>
 <!--    <string name="transfer">Transfer</string>-->
-<!--    <string name="transfer">Transfer</string>-->
+
+    <string name="transactions">Transactions</string>
 
     <string name="pending">Pending</string>
     <string name="confirmed">Confirmed</string>
     <string name="refused">Refused</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="editable">Editable</string>
+    <string name="created">Created</string>
+    <string name="signed">Signed</string>
+
+    <string name="amd">AMD</string>
+    <string name="euro">EURO</string>
+    <string name="usd">USD</string>
+    <string name="rub">RUB</string>
 </resources>

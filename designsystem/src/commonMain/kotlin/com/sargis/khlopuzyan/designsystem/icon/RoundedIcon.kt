@@ -47,9 +47,9 @@ fun RoundedIcon(
     painter: Painter,
     isDarkTheme: Boolean,
     contentDescription: String? = null,
-    size: Dp = 56.dp,
-    cornerRadius: Dp = 12.dp,
-    borderWidth: Dp = 2.dp,
+    size: Dp = 42.dp,
+    cornerRadius: Dp = 8.dp,
+    borderWidth: Dp = 0.5.dp,
     borderColor: Color = Grey,
     modifier: Modifier = Modifier
 ) {
@@ -67,7 +67,7 @@ fun RoundedIcon(
             colorFilter = ColorFilter.tint(if (isDarkTheme) LightBlue else Color.Black),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(size * 0.6f)   // icon takes 60 % of the box
+            modifier = Modifier.size(size * 0.5f)   // icon takes 50 % of the box
         )
     }
 }

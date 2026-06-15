@@ -31,10 +31,13 @@ import com.sargis.khlopuzyan.designsystem.theme.AppTheme
 import com.sargis.khlopuzyan.designsystem.theme.Green
 import com.sargis.khlopuzyan.designsystem.theme.Grey
 import com.sargis.khlopuzyan.designsystem.theme.Red
+import com.sargis.khlopuzyan.designsystem.unit.formatAsAmount
+import com.sargis.khlopuzyan.feature.main.domain.transactions.Currency
+import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionCategory
 import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionStatus
+import com.sargis.khlopuzyan.feature.main.domain.transactions.TransactionType
 import com.sargis.khlopuzyan.feature.main.ui.util.isConfirmed
 import com.sargis.khlopuzyan.feature.main.ui.util.localizedRes
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -45,12 +48,7 @@ fun TransactionItem(
     selectable: Boolean = true,
     isSelectMode: Boolean = false,
     isSelected: Boolean = true,
-    iconRes: DrawableResource,
-    title: String,
-    subTitle: String,
-    amount: String,
-    currency: String,
-    status: TransactionStatus,
+    transactionListItem: TransactionListItem,
     onCheckedChange: (isChecked: Boolean) -> Unit = { },
     onItemClick: () -> Unit = { },
     onItemLongClick: () -> Unit = { }
@@ -78,13 +76,13 @@ fun TransactionItem(
         }
 
         RoundedIcon(
-            painter = painterResource(iconRes),
+            painter = painterResource(transactionListItem.iconRes),
             isDarkTheme = isDarkTheme,
             contentDescription = null,
-            size = 40.dp,
+            size = 42.dp,
             cornerRadius = 8.dp,
             borderColor = Grey,
-            borderWidth = 0.dp
+            borderWidth = 0.5.dp
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -101,7 +99,7 @@ fun TransactionItem(
                 ) {
                     Text(
                         modifier = Modifier.wrapContentHeight().fillMaxWidth(),
-                        text = title,
+                        text = transactionListItem.title,
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -112,7 +110,7 @@ fun TransactionItem(
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        text = subTitle,
+                        text = transactionListItem.subtitle,
                         color = Grey
                     )
                 }
@@ -122,16 +120,16 @@ fun TransactionItem(
                     horizontalAlignment = Alignment.End
                 ) {
                     Text(
-                        text = "$amount $currency",
+                        text = "${transactionListItem.amount.formatAsAmount()} ${transactionListItem.currency.name}",
                         style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = stringResource(status.localizedRes()),
+                        text = stringResource(transactionListItem.transactionStatus.localizedRes()),
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 1,
-                        color = if (status.isConfirmed()) Green else Red
+                        color = if (transactionListItem.transactionStatus.isConfirmed()) Green else Red
                     )
                 }
             }
@@ -146,12 +144,18 @@ fun TransactionItem(
 private fun TransactionItemPreview() {
     AppTheme {
         TransactionItem(
-            title = "Transfer to Card",
-            subTitle = "Sargis Khlopuzyan",
-            amount = "120.00",
-            currency = "AMD",
-            status = TransactionStatus.CONFIRMED,
-            iconRes = SharedRes.drawable.compose_multiplatform,
+            transactionListItem = TransactionListItem(
+                iconRes = SharedRes.drawable.compose_multiplatform,
+                transactionNumber = 123456789,
+                date = "12.12.2023",
+                title = "Transfer to Card",
+                subtitle = "Sargis Khlopuzyan",
+                amount = 120.0,
+                currency = Currency.AMD,
+                transactionType = TransactionType.TRANSFERS,
+                transactionStatus = TransactionStatus.CONFIRMED,
+                transactionCategory = TransactionCategory.TRANSFER_TO_CARD
+            ),
             isDarkTheme = false
         )
     }
@@ -162,14 +166,19 @@ private fun TransactionItemPreview() {
 private fun TransactionItemDarkPreview() {
     AppTheme(darkTheme = true) {
         TransactionItem(
-            title = "Transfer to Card",
-            subTitle = "Sargis Khlopuzyan",
-            amount = "120.00",
-            currency = "AMD",
-            status = TransactionStatus.CONFIRMED,
-            iconRes = SharedRes.drawable.compose_multiplatform,
+            transactionListItem = TransactionListItem(
+                iconRes = SharedRes.drawable.compose_multiplatform,
+                transactionNumber = 123456789,
+                date = "12.12.2023",
+                title = "Transfer to Card",
+                subtitle = "Sargis Khlopuzyan",
+                amount = 120.0,
+                currency = Currency.AMD,
+                transactionType = TransactionType.TRANSFERS,
+                transactionStatus = TransactionStatus.CONFIRMED,
+                transactionCategory = TransactionCategory.TRANSFER_TO_CARD
+            ),
             isDarkTheme = true
         )
     }
 }
-
