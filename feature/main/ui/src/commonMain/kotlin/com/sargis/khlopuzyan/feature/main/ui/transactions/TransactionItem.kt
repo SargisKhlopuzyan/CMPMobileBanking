@@ -87,7 +87,7 @@ fun TransactionItem(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
             Row(
                 modifier = Modifier.fillMaxSize().padding(end = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,

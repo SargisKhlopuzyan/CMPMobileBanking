@@ -25,7 +25,7 @@ import com.sargis.khlopuzyan.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.designsystem.resources.compose_multiplatform
 import com.sargis.khlopuzyan.designsystem.theme.AppTheme
 import com.sargis.khlopuzyan.designsystem.theme.Grey
-import com.sargis.khlopuzyan.designsystem.theme.LightBlue
+import com.sargis.khlopuzyan.designsystem.theme.PrimaryBlue
 import org.jetbrains.compose.resources.painterResource
 
 /**
@@ -64,7 +64,7 @@ fun RoundedIcon(
     ) {
         Image(
             painter = painter,
-            colorFilter = ColorFilter.tint(if (isDarkTheme) LightBlue else Color.Black),
+            colorFilter = ColorFilter.tint(if (isDarkTheme) PrimaryBlue else Color.Black),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(size * 0.5f)   // icon takes 50 % of the box

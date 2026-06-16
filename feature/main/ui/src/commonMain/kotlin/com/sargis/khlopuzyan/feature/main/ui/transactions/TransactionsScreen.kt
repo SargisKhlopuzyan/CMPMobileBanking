@@ -12,7 +12,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +34,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sargis.khlopuzyan.designsystem.button.SelectableButton
+import com.sargis.khlopuzyan.designsystem.component.EmptyResultComponent
 import com.sargis.khlopuzyan.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.designsystem.resources.transactions
 import com.sargis.khlopuzyan.designsystem.theme.AppTheme
@@ -93,7 +94,7 @@ fun TransactionsScreenComponent(
                                     filteredTransactions.clear()
                                     filteredTransactions.addAll(transactions.findMatches(it))
                                 },
-                                textStyle = MaterialTheme.typography.bodyMedium,
+                                textStyle = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.fillMaxWidth()
                                     .focusRequester(focusRequester),
                                 placeholder = { Text("Search...") },
@@ -187,17 +188,25 @@ fun TransactionsScreenComponent(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Button(
-                modifier = Modifier.wrapContentSize().padding(horizontal = 12.dp, vertical = 8.dp),
-                onClick = { }) {
-                Text("Current month")
-            }
-            CategorizedTransactionsList(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-                transactions = filteredTransactions
+            SelectableButton(
+                text = "Current month",
+                selected = true,
+                modifier = Modifier.wrapContentSize().padding(horizontal = 12.dp, vertical = 12.dp),
+                onClick = { }
             )
+
+            if (filteredTransactions.isNotEmpty()) {
+                CategorizedTransactionsList(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.background),
+                    transactions = filteredTransactions
+                )
+            } else {
+                EmptyResultComponent(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
