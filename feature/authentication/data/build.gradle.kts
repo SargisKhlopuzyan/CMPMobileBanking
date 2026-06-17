@@ -6,6 +6,8 @@ plugins {
 
 kotlin {
 
+    jvm()
+
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
@@ -37,21 +39,14 @@ kotlin {
     // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "feature:authentication:dataKit"
 
-    iosX64 {
-        binaries.framework {
+    listOf(
+        //iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
             baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
+            isStatic = true
         }
     }
 
@@ -82,13 +77,13 @@ kotlin {
             }
         }
 
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.testExt.junit)
-            }
-        }
+//        getByName("androidDeviceTest") {
+//            dependencies {
+//                implementation(libs.androidx.core)
+//                implementation(libs.androidx.runner)
+//                implementation(libs.androidx.testExt.junit)
+//            }
+//        }
 
         iosMain {
             dependencies {

@@ -38,7 +38,7 @@ kotlin {
     val xcfName = "feature:authentication:domainKit"
 
     listOf(
-        iosX64(),
+        //iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -75,13 +75,13 @@ kotlin {
             }
         }
 
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.testExt.junit)
-            }
-        }
+//        getByName("androidDeviceTest") {
+//            dependencies {
+//                implementation(libs.androidx.core)
+//                implementation(libs.androidx.runner)
+//                implementation(libs.androidx.testExt.junit)
+//            }
+//        }
 
         iosMain {
             dependencies {

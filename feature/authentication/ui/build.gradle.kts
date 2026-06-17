@@ -1,30 +1,33 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
 }
 
 kotlin {
+
+    jvm()
 
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
         namespace = "com.sargis.khlopuzyan.feature.authentication.ui"
-        compileSdk {
-            version = release(36) {
-                minorApiLevel = 1
-            }
-        }
-        minSdk = 24
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
 
-        withHostTestBuilder {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_11
         }
-
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
-            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        androidResources {
+            enable = true
+        }
+        withHostTest {
+            isIncludeAndroidResources = true
         }
     }
 
@@ -38,7 +41,7 @@ kotlin {
     val xcfName = "feature:authentication:uiKit"
 
     listOf(
-        iosX64(),
+//        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -58,6 +61,23 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
+
+                implementation(projects.core.ui)
+                implementation(projects.designsystem)
+                implementation(projects.feature.main.domain)
+
+                implementation(project.dependencies.platform(libs.compose.bom))
+
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.material.icons)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.components.resources)
+                // implementation(libs.compose.uiTooling)
+                implementation(libs.compose.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
             }
         }
 
@@ -75,13 +95,13 @@ kotlin {
             }
         }
 
-        getByName("androidDeviceTest") {
-            dependencies {
-                implementation(libs.androidx.core)
-                implementation(libs.androidx.runner)
-                implementation(libs.androidx.testExt.junit)
-            }
-        }
+//        getByName("androidDeviceTest") {
+//            dependencies {
+//                implementation(libs.androidx.core)
+//                implementation(libs.androidx.runner)
+//                implementation(libs.androidx.testExt.junit)
+//            }
+//        }
 
         iosMain {
             dependencies {
@@ -93,5 +113,8 @@ kotlin {
             }
         }
     }
+}
 
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }

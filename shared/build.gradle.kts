@@ -9,6 +9,8 @@ plugins {
 
 kotlin {
 
+    jvm()
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -18,9 +20,7 @@ kotlin {
             isStatic = true
         }
     }
-    
-    jvm()
-    
+
     androidLibrary {
        namespace = "com.sargis.khlopuzyan.cmpmobilebanking.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -43,6 +43,7 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(projects.designsystem)
+            implementation(projects.core.navigation)
             implementation(projects.feature.main.ui)
 
             implementation(libs.compose.runtime)
@@ -50,6 +51,9 @@ kotlin {
             implementation(libs.compose.material3)
             implementation(libs.compose.ui)
             implementation(libs.compose.components.resources)
+
+            implementation(libs.navigation.compose)
+
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
