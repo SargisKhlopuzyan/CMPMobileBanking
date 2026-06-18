@@ -42,7 +42,7 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
         }
         commonMain.dependencies {
-            implementation(projects.designsystem)
+            implementation(projects.core.designsystem)
             implementation(projects.core.navigation)
             implementation(projects.feature.home.ui)
 

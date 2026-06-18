@@ -62,7 +62,7 @@ kotlin {
                 api(libs.kotlin.stdlib)
                 // Add KMP dependencies here
 
-                api(projects.designsystem)
+                api(projects.core.designsystem)
 
                 api(project.dependencies.platform(libs.compose.bom))
 

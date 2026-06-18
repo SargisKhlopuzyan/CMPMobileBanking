@@ -13,7 +13,7 @@ import com.sargis.khlopuzyan.core.navigation.HomeNavGraph
 import com.sargis.khlopuzyan.core.navigation.MenuNavGraph
 import com.sargis.khlopuzyan.core.navigation.SettingsNavGraph
 import com.sargis.khlopuzyan.core.navigation.TransfersAndPaymentsNavGraph
-import com.sargis.khlopuzyan.designsystem.theme.AppTheme
+import com.sargis.khlopuzyan.core.designsystem.theme.AppTheme
 
 @Composable
 @Preview

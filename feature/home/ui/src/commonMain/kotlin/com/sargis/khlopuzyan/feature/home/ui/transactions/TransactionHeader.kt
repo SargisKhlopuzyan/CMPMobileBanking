@@ -8,7 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sargis.khlopuzyan.designsystem.theme.Grey
+import com.sargis.khlopuzyan.core.designsystem.theme.Grey
 
 @Composable
 fun TransactionHeader(
