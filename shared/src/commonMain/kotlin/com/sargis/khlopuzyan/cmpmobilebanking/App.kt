@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sargis.khlopuzyan.core.navigation.AuthenticationNavGraph
 import com.sargis.khlopuzyan.core.navigation.BaseNavGraph
 import com.sargis.khlopuzyan.core.navigation.MainNavGraph
+import com.sargis.khlopuzyan.core.navigation.TransfersAndPaymentsNavGraph
 import com.sargis.khlopuzyan.designsystem.theme.AppTheme
 
 @Composable
@@ -28,6 +29,7 @@ fun App() {
             listOf<BaseNavGraph>(
                 AuthenticationNavGraph,
                 MainNavGraph,
+                TransfersAndPaymentsNavGraph,
             ).forEach { baseNavGraph ->
                 baseNavGraph.build(
                     modifier = Modifier.fillMaxSize(),

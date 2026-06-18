@@ -11,16 +11,6 @@ kotlin {
 
     jvm()
 
-    listOf(
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "Shared"
-            isStatic = true
-        }
-    }
-
     androidLibrary {
        namespace = "com.sargis.khlopuzyan.cmpmobilebanking.shared"
        compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -35,6 +25,16 @@ kotlin {
        withHostTest {
            isIncludeAndroidResources = true
        }
+    }
+
+    listOf(
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "Shared"
+            isStatic = true
+        }
     }
     
     sourceSets {

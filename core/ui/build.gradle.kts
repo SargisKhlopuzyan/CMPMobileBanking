@@ -29,21 +29,6 @@ kotlin {
         withHostTest {
             isIncludeAndroidResources = true
         }
-//        compileSdk {
-//            version = release(36) {
-//                minorApiLevel = 1
-//            }
-//        }
-//        minSdk = 24
-//
-//        withHostTestBuilder {
-//        }
-//
-//        withDeviceTestBuilder {
-//            sourceSetTreeName = "test"
-//        }.configure {
-//            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        }
     }
 
     // For iOS targets, this is also where you should
