@@ -5,15 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.sargis.khlopuzyan.feature.authentication.ui.about.AboutScreen
 import com.sargis.khlopuzyan.feature.authentication.ui.becomeACustomer.BecomeACustomerScreen
-import com.sargis.khlopuzyan.feature.authentication.ui.calculator.CalculatorScreen
 import com.sargis.khlopuzyan.feature.authentication.ui.login.LoginScreen
 import com.sargis.khlopuzyan.feature.authentication.ui.loginMain.LoginMainScreen
-import com.sargis.khlopuzyan.feature.authentication.ui.map.MapScreen
-import com.sargis.khlopuzyan.feature.authentication.ui.news.NewsScreen
 import com.sargis.khlopuzyan.feature.authentication.ui.onlineRegistration.OnlineRegistrationScreen
-import com.sargis.khlopuzyan.feature.authentication.ui.rates.RatesScreen
 import com.sargis.khlopuzyan.feature.authentication.ui.resetPassword.ResetPasswordScreen
 import kotlinx.serialization.Serializable
 
@@ -26,20 +21,20 @@ object AuthenticationNavGraph : BaseNavGraph {
         @Serializable
         data object LoginMain : Dest
 
-        @Serializable
-        data object Rates : Dest
+        //        @Serializable
+        //        data object Rates : Dest
 
-        @Serializable
-        data object Calculator : Dest
+        //        @Serializable
+        //        data object Calculator : Dest
 
-        @Serializable
-        data object Map : Dest
+        //        @Serializable
+        //        data object Map : Dest
 
-        @Serializable
-        data object News : Dest
+        //        @Serializable
+        //        data object News : Dest
 
-        @Serializable
-        data object About : Dest
+        //        @Serializable
+        //        data object About : Dest
 
         @Serializable
         data object Login : Dest
@@ -75,21 +70,21 @@ object AuthenticationNavGraph : BaseNavGraph {
             composable<Dest.BecomeACustomer> { navBackStackEntry ->
                 BecomeACustomerScreen()
             }
-            composable<Dest.Rates> { navBackStackEntry ->
-                RatesScreen()
-            }
-            composable<Dest.Calculator> { navBackStackEntry ->
-                CalculatorScreen()
-            }
-            composable<Dest.Map> { navBackStackEntry ->
-                MapScreen()
-            }
-            composable<Dest.News> { navBackStackEntry ->
-                NewsScreen()
-            }
-            composable<Dest.About> { navBackStackEntry ->
-                AboutScreen()
-            }
+            //            composable<Dest.Rates> { navBackStackEntry ->
+            //                RatesScreen()
+            //            }
+            //            composable<Dest.Calculator> { navBackStackEntry ->
+            //                CalculatorScreen()
+            //            }
+            //            composable<Dest.Map> { navBackStackEntry ->
+            //                MapScreen()
+            //            }
+            //            composable<Dest.News> { navBackStackEntry ->
+            //                NewsScreen()
+            //            }
+            //            composable<Dest.About> { navBackStackEntry ->
+            //                AboutScreen()
+            //            }
         }
     }
 }

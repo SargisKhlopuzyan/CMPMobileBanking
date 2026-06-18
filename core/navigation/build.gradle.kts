@@ -67,6 +67,9 @@ kotlin {
                 implementation(projects.feature.authentication.ui)
                 implementation(projects.feature.main.ui)
                 implementation(projects.feature.transfersAndPayments.ui)
+                implementation(projects.feature.applications.ui)
+                implementation(projects.feature.menu.ui)
+                implementation(projects.feature.settings.ui)
             }
         }
 

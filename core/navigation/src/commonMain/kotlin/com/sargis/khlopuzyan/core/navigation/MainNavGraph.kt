@@ -16,15 +16,9 @@ import com.sargis.khlopuzyan.feature.main.ui.loans.LoansScreen
 import com.sargis.khlopuzyan.feature.main.ui.newCard.NewCardScreen
 import com.sargis.khlopuzyan.feature.main.ui.notification.NotificationScreen
 import com.sargis.khlopuzyan.feature.main.ui.notifications.NotificationsScreen
-import com.sargis.khlopuzyan.feature.main.ui.onlineLoan.OnlineLoanScreen
-import com.sargis.khlopuzyan.feature.main.ui.openDigitalCard.OpenDigitalCardScreen
-import com.sargis.khlopuzyan.feature.main.ui.openNewAccount.OpenNewAccountScreen
-import com.sargis.khlopuzyan.feature.main.ui.openNewDeposit.OpenNewDepositScreen
-import com.sargis.khlopuzyan.feature.main.ui.orderNewPlasticCard.OrderNewPlasticCardScreen
 import com.sargis.khlopuzyan.feature.main.ui.setCardNewPIN.SetCardNewPINScreen
 import com.sargis.khlopuzyan.feature.main.ui.transaction.TransactionScreen
 import com.sargis.khlopuzyan.feature.main.ui.transactions.TransactionsScreen
-import com.sargis.khlopuzyan.feature.main.ui.userProfile.UserProfileScreen
 import kotlinx.serialization.Serializable
 
 object MainNavGraph : BaseNavGraph {
@@ -36,8 +30,8 @@ object MainNavGraph : BaseNavGraph {
         @Serializable
         data object Main : Dest
 
-        @Serializable
-        data object UserProfile : Dest
+//        @Serializable
+//        data object UserProfile : Dest
 
         @Serializable
         data object Notifications : Dest
@@ -48,11 +42,11 @@ object MainNavGraph : BaseNavGraph {
         @Serializable
         data object NewCard : Dest
 
-        @Serializable
-        data object OpenDigitalCard : Dest
+        //        @Serializable
+        //        data object OpenDigitalCard : Dest
 
-        @Serializable
-        data object OrderNewPlasticCard : Dest
+        //        @Serializable
+        //        data object OrderNewPlasticCard : Dest
 
         @Serializable
         data object AttachAnotherCard : Dest
@@ -66,8 +60,8 @@ object MainNavGraph : BaseNavGraph {
         @Serializable
         data object Accounts : Dest
 
-        @Serializable
-        data object OpenNewAccount : Dest
+        //        @Serializable
+        //        data object OpenNewAccount : Dest
 
         @Serializable
         data object Account : Dest
@@ -75,8 +69,8 @@ object MainNavGraph : BaseNavGraph {
         @Serializable
         data object Loans : Dest
 
-        @Serializable
-        data object OnlineLoan : Dest
+        //        @Serializable
+        //        data object OnlineLoan : Dest
 
         @Serializable
         data object Deposits : Dest
@@ -84,8 +78,8 @@ object MainNavGraph : BaseNavGraph {
         @Serializable
         data object Deposit : Dest
 
-        @Serializable
-        data object OpenNewDeposit : Dest
+        //        @Serializable
+        //        data object OpenNewDeposit : Dest
 
         @Serializable
         data object Transactions : Dest
@@ -100,13 +94,13 @@ object MainNavGraph : BaseNavGraph {
         navGraphBuilder: NavGraphBuilder
     ) {
         navGraphBuilder.navigation<Dest.Root>(startDestination = Dest.Main::class) {
-//        navGraphBuilder.navigation<Dest.Root>(startDestination = Dest.Transactions::class) {
+            //        navGraphBuilder.navigation<Dest.Root>(startDestination = Dest.Transactions::class) {
             composable<Dest.Main> { navBackStackEntry ->
                 MainScreen()
             }
-            composable<Dest.UserProfile> { navBackStackEntry ->
-                UserProfileScreen()
-            }
+//            composable<Dest.UserProfile> { navBackStackEntry ->
+//                UserProfileScreen()
+//            }
             composable<Dest.Notifications> { navBackStackEntry ->
                 NotificationsScreen()
             }
@@ -116,12 +110,12 @@ object MainNavGraph : BaseNavGraph {
             composable<Dest.NewCard> { navBackStackEntry ->
                 NewCardScreen()
             }
-            composable<Dest.OpenDigitalCard> { navBackStackEntry ->
-                OpenDigitalCardScreen()
-            }
-            composable<Dest.OrderNewPlasticCard> { navBackStackEntry ->
-                OrderNewPlasticCardScreen()
-            }
+            //            composable<Dest.OpenDigitalCard> { navBackStackEntry ->
+            //                OpenDigitalCardScreen()
+            //            }
+            //            composable<Dest.OrderNewPlasticCard> { navBackStackEntry ->
+            //                OrderNewPlasticCardScreen()
+            //            }
             composable<Dest.AttachAnotherCard> { navBackStackEntry ->
                 AttachAnotherCardScreen()
             }
@@ -134,27 +128,27 @@ object MainNavGraph : BaseNavGraph {
             composable<Dest.Accounts> { navBackStackEntry ->
                 AccountsScreen()
             }
-            composable<Dest.OpenNewAccount> { navBackStackEntry ->
-                OpenNewAccountScreen()
-            }
+            //            composable<Dest.OpenNewAccount> { navBackStackEntry ->
+            //                OpenNewAccountScreen()
+            //            }
             composable<Dest.Account> { navBackStackEntry ->
                 AccountScreen()
             }
             composable<Dest.Loans> { navBackStackEntry ->
                 LoansScreen()
             }
-            composable<Dest.OnlineLoan> { navBackStackEntry ->
-                OnlineLoanScreen()
-            }
+            //            composable<Dest.OnlineLoan> { navBackStackEntry ->
+            //                OnlineLoanScreen()
+            //            }
             composable<Dest.Deposits> { navBackStackEntry ->
                 DepositsScreen()
             }
             composable<Dest.Deposit> { navBackStackEntry ->
                 DepositScreen()
             }
-            composable<Dest.OpenNewDeposit> { navBackStackEntry ->
-                OpenNewDepositScreen()
-            }
+            //            composable<Dest.OpenNewDeposit> { navBackStackEntry ->
+            //                OpenNewDepositScreen()
+            //            }
             composable<Dest.Transactions> { navBackStackEntry ->
                 TransactionsScreen()
             }
