@@ -16,7 +16,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.sargis.khlopuzyan.feature.authentication.ui"
+        namespace = "com.sargis.khlopuzyan.feature.menu.ui"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -38,7 +38,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "feature:authentication:uiKit"
+    val xcfName = "feature:menu:uiKit"
 
     listOf(
         //iosX64(),
@@ -64,7 +64,6 @@ kotlin {
 
                 implementation(projects.core.ui)
                 implementation(projects.designsystem)
-                implementation(projects.feature.main.domain)
 
                 implementation(project.dependencies.platform(libs.compose.bom))
 
