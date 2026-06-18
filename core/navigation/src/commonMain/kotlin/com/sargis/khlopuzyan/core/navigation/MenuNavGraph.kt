@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.sargis.khlopuzyan.feature.menu.ui.about.AboutScreen
 import com.sargis.khlopuzyan.feature.menu.ui.beneficiaries.BeneficiariesScreen
+import com.sargis.khlopuzyan.feature.menu.ui.beneficiary.BeneficiaryScreen
+import com.sargis.khlopuzyan.feature.menu.ui.beneficiaryEdit.BeneficiaryEditScreen
 import com.sargis.khlopuzyan.feature.menu.ui.bonds.BondsScreen
 import com.sargis.khlopuzyan.feature.menu.ui.calculator.CalculatorScreen
 import com.sargis.khlopuzyan.feature.menu.ui.debts.DebtsScreen
@@ -35,6 +37,12 @@ object MenuNavGraph : BaseNavGraph {
 
         @Serializable
         data object Beneficiaries : Dest
+
+        @Serializable
+        data object Beneficiary : Dest
+
+        @Serializable
+        data object BeneficiaryEdit : Dest
 
         @Serializable
         data object Vehicles : Dest
@@ -84,6 +92,12 @@ object MenuNavGraph : BaseNavGraph {
             }
             composable<Dest.Beneficiaries> { navBackStackEntry ->
                 BeneficiariesScreen()
+            }
+            composable<Dest.Beneficiary> { navBackStackEntry ->
+                BeneficiaryScreen()
+            }
+            composable<Dest.BeneficiaryEdit> { navBackStackEntry ->
+                BeneficiaryEditScreen()
             }
             composable<Dest.Vehicles> { navBackStackEntry ->
                 VehiclesScreen()
