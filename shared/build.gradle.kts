@@ -44,7 +44,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.designsystem)
             implementation(projects.core.navigation)
-            implementation(projects.feature.main.ui)
+            implementation(projects.feature.home.ui)
 
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)

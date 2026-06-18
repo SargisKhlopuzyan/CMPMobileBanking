@@ -64,7 +64,6 @@ kotlin {
 
                 implementation(projects.core.ui)
                 implementation(projects.designsystem)
-                implementation(projects.feature.main.domain)
 
                 implementation(project.dependencies.platform(libs.compose.bom))
 

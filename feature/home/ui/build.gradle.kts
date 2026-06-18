@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
-    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -17,7 +16,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.sargis.khlopuzyan.core.navigation"
+        namespace = "com.sargis.khlopuzyan.feature.home.ui"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -39,7 +38,7 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "core:navigationKit"
+    val xcfName = "feature:home:uiKit"
 
     listOf(
         //iosX64(),
@@ -60,16 +59,26 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
 
-                implementation(libs.navigation.compose)
-                implementation(projects.feature.authentication.ui)
-                implementation(projects.feature.home.ui)
-                implementation(projects.feature.transfersAndPayments.ui)
-                implementation(projects.feature.applications.ui)
-                implementation(projects.feature.menu.ui)
-                implementation(projects.feature.settings.ui)
+                implementation(projects.core.ui)
+                implementation(projects.designsystem)
+                implementation(projects.feature.home.domain)
+
+                implementation(project.dependencies.platform(libs.compose.bom))
+
+                implementation(libs.compose.runtime)
+                implementation(libs.compose.foundation)
+                implementation(libs.compose.material3)
+                implementation(libs.compose.material.icons)
+                implementation(libs.compose.ui)
+                implementation(libs.compose.components.resources)
+                // implementation(libs.compose.uiTooling)
+                implementation(libs.compose.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodelCompose)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
             }
         }
 
@@ -84,16 +93,17 @@ kotlin {
                 // Add Android-specific dependencies here. Note that this source set depends on
                 // commonMain by default and will correctly pull the Android artifacts of any KMP
                 // dependencies declared in commonMain.
+                implementation(libs.compose.uiToolingPreview)
             }
         }
 
-//        getByName("androidDeviceTest") {
-//            dependencies {
-//                implementation(libs.androidx.core)
-//                implementation(libs.androidx.runner)
-//                implementation(libs.androidx.testExt.junit)
-//            }
-//        }
+        //        getByName("androidDeviceTest") {
+        //            dependencies {
+        //                implementation(libs.androidx.core)
+        //                implementation(libs.androidx.runner)
+        //                implementation(libs.androidx.testExt.junit)
+        //            }
+        //        }
 
         iosMain {
             dependencies {
@@ -105,4 +115,8 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    androidRuntimeClasspath(libs.compose.uiTooling)
 }

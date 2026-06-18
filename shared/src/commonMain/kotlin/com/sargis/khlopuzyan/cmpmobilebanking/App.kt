@@ -9,7 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.sargis.khlopuzyan.core.navigation.ApplicationsNavGraph
 import com.sargis.khlopuzyan.core.navigation.AuthenticationNavGraph
 import com.sargis.khlopuzyan.core.navigation.BaseNavGraph
-import com.sargis.khlopuzyan.core.navigation.MainNavGraph
+import com.sargis.khlopuzyan.core.navigation.HomeNavGraph
 import com.sargis.khlopuzyan.core.navigation.MenuNavGraph
 import com.sargis.khlopuzyan.core.navigation.SettingsNavGraph
 import com.sargis.khlopuzyan.core.navigation.TransfersAndPaymentsNavGraph
@@ -24,11 +24,11 @@ fun App() {
         NavHost(
             navController = navController,
             //            startDestination = AuthenticationNavGraph.Dest.Root
-            startDestination = MainNavGraph.Dest.Root
+            startDestination = HomeNavGraph.Dest.Root
         ) {
             listOf<BaseNavGraph>(
                 AuthenticationNavGraph,
-                MainNavGraph,
+                HomeNavGraph,
                 TransfersAndPaymentsNavGraph,
                 ApplicationsNavGraph,
                 MenuNavGraph,

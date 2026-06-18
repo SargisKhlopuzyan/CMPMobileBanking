@@ -3,10 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
-    alias(libs.plugins.composeMultiplatform)
-    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
-    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -17,7 +14,7 @@ kotlin {
     // which platforms this KMP module supports.
     // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     android {
-        namespace = "com.sargis.khlopuzyan.core.navigation"
+        namespace = "com.sargis.khlopuzyan.feature.home.domain"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -39,10 +36,10 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "core:navigationKit"
+    val xcfName = "feature:home:domainKit"
 
     listOf(
-        //iosX64(),
+        // iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -62,14 +59,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 // Add KMP dependencies here
-
-                implementation(libs.navigation.compose)
-                implementation(projects.feature.authentication.ui)
-                implementation(projects.feature.home.ui)
-                implementation(projects.feature.transfersAndPayments.ui)
-                implementation(projects.feature.applications.ui)
-                implementation(projects.feature.menu.ui)
-                implementation(projects.feature.settings.ui)
             }
         }
 
@@ -105,4 +94,5 @@ kotlin {
             }
         }
     }
+
 }
