@@ -59,24 +59,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
-                // Add KMP dependencies here
-
                 implementation(projects.core.ui)
-                implementation(projects.designsystem)
-
-                implementation(project.dependencies.platform(libs.compose.bom))
-
-                implementation(libs.compose.runtime)
-                implementation(libs.compose.foundation)
-                implementation(libs.compose.material3)
-                implementation(libs.compose.material.icons)
-                implementation(libs.compose.ui)
-                implementation(libs.compose.components.resources)
-                // implementation(libs.compose.uiTooling)
-                implementation(libs.compose.uiToolingPreview)
-                implementation(libs.androidx.lifecycle.viewmodelCompose)
-                implementation(libs.androidx.lifecycle.runtimeCompose)
             }
         }
 
