@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
+    alias(libs.plugins.native.coroutines) // this will expose viewmodel in form of state object in iOS side
 }
 
 kotlin {
@@ -59,8 +60,21 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(libs.compose.runtime)
+
                 implementation(projects.core.ui)
+                implementation(projects.core.fakeDataSource)
                 implementation(projects.feature.home.domain)
+
+                implementation(libs.kmp.observableviewmodel.core)
+
+                implementation(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
+
+                implementation(libs.coil)
+                implementation(libs.coil.ktor)
+
             }
         }
 

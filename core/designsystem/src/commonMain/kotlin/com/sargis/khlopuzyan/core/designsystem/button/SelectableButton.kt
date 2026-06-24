@@ -24,7 +24,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +36,6 @@ import com.sargis.khlopuzyan.core.designsystem.theme.DarkGreyBackground
 import com.sargis.khlopuzyan.core.designsystem.theme.Grey
 import com.sargis.khlopuzyan.core.designsystem.theme.LocalDarkMode
 import com.sargis.khlopuzyan.core.designsystem.theme.PrimaryBlue
-import com.sargis.khlopuzyan.core.designsystem.theme.White
 import org.jetbrains.compose.resources.painterResource
 
 @Composable

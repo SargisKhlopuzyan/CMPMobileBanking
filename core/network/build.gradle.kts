@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
 }
 
@@ -57,8 +58,19 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
+                implementation(projects.core.domain)
+
                 implementation(libs.kotlin.stdlib)
-                // Add KMP dependencies here
+                implementation(libs.compose.runtime)
+
+                implementation(libs.koin.core)
+
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.serialization)
+                implementation(libs.ktor.client.logging)
+
+                implementation(libs.kotlinx.serialization)
             }
         }
 
@@ -70,9 +82,8 @@ kotlin {
 
         androidMain {
             dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+                implementation(libs.koin.android)
+                implementation(libs.ktor.client.android)
             }
         }
 
@@ -86,13 +97,16 @@ kotlin {
 
         iosMain {
             dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
+                implementation(libs.ktor.client.ios)
+            }
+        }
+
+        jvmMain {
+            dependencies {
+                implementation(libs.ktor.client.desktop)
+                implementation(libs.ktor.client.android)
+                implementation(libs.kotlinx.coroutinesSwing)
             }
         }
     }
-
 }

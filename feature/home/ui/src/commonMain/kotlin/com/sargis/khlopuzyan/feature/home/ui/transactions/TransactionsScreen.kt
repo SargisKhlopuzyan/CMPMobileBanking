@@ -34,34 +34,34 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sargis.khlopuzyan.core.designsystem.button.SelectableButton
 import com.sargis.khlopuzyan.core.designsystem.component.EmptyResultComponent
 import com.sargis.khlopuzyan.core.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.core.designsystem.resources.transactions
 import com.sargis.khlopuzyan.core.designsystem.theme.AppTheme
 import com.sargis.khlopuzyan.core.designsystem.theme.Transparent
-import com.sargis.khlopuzyan.feature.home.domain.mock.mockTransactions
+import com.sargis.khlopuzyan.core.fakeDataSource.FakeTransactionsDataSource
 import com.sargis.khlopuzyan.feature.home.ui.util.toTransactionListItem
+import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionsScreen() {
-    val transactions = mockTransactions
-
-    val transactionListItem = transactions.map { transaction ->
-        transaction.toTransactionListItem()
-    }
+    val viewModel = koinViewModel<TransactionsViewModel>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     TransactionsScreenComponent(
         onSearchTriggered = {},
-        transactionListItem
+        uiState
     )
 }
 
 @Composable
 fun TransactionsScreenComponent(
     onSearchTriggered: (Boolean) -> Unit,
-    transactions: List<TransactionListItem>
+    uiState: TransactionsState,
 ) {
     var isSearchActive by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
@@ -71,7 +71,7 @@ fun TransactionsScreenComponent(
 
     LaunchedEffect(Unit) {
         filteredTransactions.clear()
-        filteredTransactions.addAll(transactions)
+        filteredTransactions.addAll(uiState.transactions)
     }
 
     LaunchedEffect(isSearchActive) {
@@ -92,7 +92,7 @@ fun TransactionsScreenComponent(
                                 onValueChange = {
                                     searchQuery = it
                                     filteredTransactions.clear()
-                                    filteredTransactions.addAll(transactions.findMatches(it))
+                                    filteredTransactions.addAll(uiState.transactions.findMatches(it))
                                 },
                                 textStyle = MaterialTheme.typography.bodyLarge,
                                 modifier = Modifier.fillMaxWidth()
@@ -104,7 +104,7 @@ fun TransactionsScreenComponent(
                                         IconButton(onClick = {
                                             searchQuery = ""
                                             filteredTransactions.clear()
-                                            filteredTransactions.addAll(transactions)
+                                            filteredTransactions.addAll(uiState.transactions)
                                         }) {
                                             Icon(
                                                 imageVector = Icons.Default.Close,
@@ -137,7 +137,7 @@ fun TransactionsScreenComponent(
                                 onSearchTriggered(false)
                                 searchQuery = ""
                                 filteredTransactions.clear()
-                                filteredTransactions.addAll(transactions)
+                                filteredTransactions.addAll(uiState.transactions)
                             } else {
                                 // Handle back navigation if needed
                             }
@@ -224,9 +224,13 @@ private fun TransactionsScreenComponentPreview() {
     AppTheme {
         TransactionsScreenComponent(
             onSearchTriggered = {},
-            transactions = mockTransactions.map {
-                it.toTransactionListItem()
-            }
+            uiState = TransactionsState(
+                transactions = FakeTransactionsDataSource.getTransactions().data.map {
+                    runBlocking {
+                        it.toTransactionListItem()
+                    }
+                }
+            )
         )
     }
 }
@@ -237,10 +241,13 @@ private fun TransactionsScreenComponentDarkPreview() {
     AppTheme(darkTheme = true) {
         TransactionsScreenComponent(
             onSearchTriggered = {},
-            transactions = mockTransactions.map {
-                it.toTransactionListItem()
-            }
+            uiState = TransactionsState(
+                transactions = FakeTransactionsDataSource.getTransactions().data.map {
+                    runBlocking {
+                        it.toTransactionListItem()
+                    }
+                }
+            )
         )
     }
 }
-

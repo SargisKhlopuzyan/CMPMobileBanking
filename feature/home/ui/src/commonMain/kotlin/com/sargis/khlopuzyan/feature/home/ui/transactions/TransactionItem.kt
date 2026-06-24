@@ -32,10 +32,10 @@ import com.sargis.khlopuzyan.core.designsystem.theme.Green
 import com.sargis.khlopuzyan.core.designsystem.theme.Grey
 import com.sargis.khlopuzyan.core.designsystem.theme.Red
 import com.sargis.khlopuzyan.core.designsystem.unit.formatAsAmount
-import com.sargis.khlopuzyan.feature.home.domain.transactions.Currency
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionCategory
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionStatus
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionType
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.Currency
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionCategory
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionStatus
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionType
 import com.sargis.khlopuzyan.feature.home.ui.util.isConfirmed
 import com.sargis.khlopuzyan.feature.home.ui.util.localizedRes
 import org.jetbrains.compose.resources.painterResource

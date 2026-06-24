@@ -60,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.ui)
+                implementation(libs.compose.runtime)
             }
         }
 

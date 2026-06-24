@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -27,6 +28,8 @@ kotlin {
        }
     }
 
+//    val xcf = XCFramework()
+
     listOf(
         iosArm64(),
         iosSimulatorArm64()
@@ -34,16 +37,34 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "Shared"
             isStatic = true
+
+//            export(project(":core:data"))
+//
+//            export(project(":feature:search:data"))
+//            export(project(":feature:search:domain"))
+//            export(project(":feature:search:ui"))
+//
+//            export(project(":feature:details:data"))
+//            export(project(":feature:details:domain"))
+//            export(project(":feature:details:ui"))
+//            xcf.add(this)
         }
     }
     
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
+
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(projects.core.designsystem)
             implementation(projects.core.navigation)
+            implementation(projects.core.fakeDataSource)
+            implementation(projects.core.database)
+            implementation(projects.core.network)
+            implementation(projects.feature.home.data)
+            implementation(projects.feature.home.domain)
             implementation(projects.feature.home.ui)
 
             implementation(libs.compose.runtime)
@@ -57,6 +78,8 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+
+            implementation(libs.koin.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -60,6 +60,7 @@ kotlin {
         commonMain {
             dependencies {
                 api(libs.kotlin.stdlib)
+                implementation(libs.compose.runtime)
                 // Add KMP dependencies here
 
                 api(projects.core.designsystem)

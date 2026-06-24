@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidMultiplatformLibrary)
+    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.composeCompiler)
     alias(libs.plugins.androidLint)
 }
 
@@ -57,7 +59,12 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlin.stdlib)
+                implementation(libs.koin.core)
+                implementation(libs.compose.runtime)
+                api(projects.core.domain)
+                //                implementation(libs.kotlinx.coroutines.core)
+                //                implementation(libs.kotlin.stdlib)
+                //                implementation(libs.kotlinx.coroutines.core)
                 // Add KMP dependencies here
             }
         }

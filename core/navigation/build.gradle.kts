@@ -61,6 +61,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlin.stdlib)
+                implementation(libs.compose.runtime)
                 // Add KMP dependencies here
 
                 implementation(libs.navigation.compose)

@@ -23,7 +23,7 @@ fun App() {
 
         NavHost(
             navController = navController,
-            //            startDestination = AuthenticationNavGraph.Dest.Root
+            //startDestination = AuthenticationNavGraph.Dest.Root
             startDestination = HomeNavGraph.Dest.Root
         ) {
             listOf<BaseNavGraph>(

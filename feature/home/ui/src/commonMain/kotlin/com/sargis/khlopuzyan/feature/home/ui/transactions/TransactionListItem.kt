@@ -1,9 +1,9 @@
 package com.sargis.khlopuzyan.feature.home.ui.transactions
 
-import com.sargis.khlopuzyan.feature.home.domain.transactions.Currency
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionCategory
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionStatus
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionType
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.Currency
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionCategory
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionStatus
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionType
 import org.jetbrains.compose.resources.DrawableResource
 
 data class TransactionListItem(

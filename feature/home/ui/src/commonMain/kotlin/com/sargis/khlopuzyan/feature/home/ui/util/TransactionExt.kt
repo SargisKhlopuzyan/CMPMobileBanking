@@ -1,7 +1,5 @@
 package com.sargis.khlopuzyan.feature.home.ui.util
 
-import androidx.compose.runtime.Composable
-import com.sargis.khlopuzyan.core.ui.UiText
 import com.sargis.khlopuzyan.core.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.core.designsystem.resources.cancelled
 import com.sargis.khlopuzyan.core.designsystem.resources.compose_multiplatform
@@ -18,32 +16,42 @@ import com.sargis.khlopuzyan.core.designsystem.resources.transfer_to_account
 import com.sargis.khlopuzyan.core.designsystem.resources.transfer_to_card
 import com.sargis.khlopuzyan.core.designsystem.resources.utility_group_payment
 import com.sargis.khlopuzyan.core.designsystem.resources.utility_payment
-import com.sargis.khlopuzyan.feature.home.domain.transactions.Currency
-import com.sargis.khlopuzyan.feature.home.domain.transactions.CurrencyExchange
-import com.sargis.khlopuzyan.feature.home.domain.transactions.PoliceAdministrativeFine
-import com.sargis.khlopuzyan.feature.home.domain.transactions.Transaction
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransactionStatus
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransferToAccount
-import com.sargis.khlopuzyan.feature.home.domain.transactions.TransferToCard
-import com.sargis.khlopuzyan.feature.home.domain.transactions.UtilityGroupPayment
-import com.sargis.khlopuzyan.feature.home.domain.transactions.UtilityPayment
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.Currency
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.CurrencyExchange
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.PoliceAdministrativeFine
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.Transaction
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransactionStatus
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransferToAccount
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.TransferToCard
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.UtilityGroupPayment
+import com.sargis.khlopuzyan.feature.home.domain.model.transactions.UtilityPayment
 import com.sargis.khlopuzyan.feature.home.ui.transactions.TransactionListItem
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 
-fun Transaction.getTransactionName(): StringResource {
+//suspend fun Transaction.getTransactionName(): UiText {
+//    return when (this) {
+//        is PoliceAdministrativeFine -> UiText.StringResourceId(SharedRes.string.currency_exchange)
+//        is TransferToAccount -> UiText.StringResourceId(SharedRes.string.transfer_to_account)
+//        is TransferToCard -> UiText.StringResourceId(SharedRes.string.transfer_to_card)
+//        is UtilityGroupPayment -> UiText.StringResourceId(SharedRes.string.utility_group_payment)
+//        is UtilityPayment -> UiText.StringResourceId(SharedRes.string.utility_payment)
+//    }
+//}
+
+suspend fun Transaction.getTransactionName(): String {
     return when (this) {
-        is CurrencyExchange -> SharedRes.string.currency_exchange
-        is PoliceAdministrativeFine -> SharedRes.string.currency_exchange
-        is TransferToAccount -> SharedRes.string.transfer_to_account
-        is TransferToCard -> SharedRes.string.transfer_to_card
-        is UtilityGroupPayment -> SharedRes.string.utility_group_payment
-        is UtilityPayment -> SharedRes.string.utility_payment
+        is CurrencyExchange -> getString(SharedRes.string.currency_exchange)
+        is PoliceAdministrativeFine -> getString(SharedRes.string.currency_exchange)
+        is TransferToAccount -> getString(SharedRes.string.transfer_to_account)
+        is TransferToCard -> getString(SharedRes.string.transfer_to_card)
+        is UtilityGroupPayment -> getString(SharedRes.string.utility_group_payment)
+        is UtilityPayment -> getString(SharedRes.string.utility_payment)
     }
 }
 
-@Composable
-fun Transaction.toTransactionListItem(): TransactionListItem {
+suspend fun Transaction.toTransactionListItem(): TransactionListItem {
     var amount: Double
     var currency: Currency
     var title: String
@@ -52,37 +60,40 @@ fun Transaction.toTransactionListItem(): TransactionListItem {
     when (this) {
         is CurrencyExchange -> {
             title = this.aim
+//            subtitle = UiText.DynamicString(this.aim)
             subtitle = this.aim
             amount = this.toAmount
             currency = this.toCurrency
         }
         is PoliceAdministrativeFine -> {
             title = this.aim
+//            subtitle = UiText.DynamicString(this.beneficiaryName)
             subtitle = this.beneficiaryName
             amount = this.amount
             currency = this.currency
         }
         is TransferToAccount -> {
             title = this.aim
+//            subtitle = UiText.DynamicString(this.beneficiaryName)
             subtitle = this.beneficiaryName
             amount = this.amount
             currency = this.currency
         }
         is TransferToCard -> {
             title = this.aim
-            subtitle = UiText.StringResourceId(this.getTransactionName()).asString()
+            subtitle = this.getTransactionName()
             amount = this.amount
             currency = this.currency
         }
         is UtilityGroupPayment -> {
             title = this.aim
-            subtitle = UiText.StringResourceId(this.getTransactionName()).asString()
+            subtitle = this.getTransactionName()
             amount = this.utilityPayments.sumOf { it.paymentAmount }
             currency = this.utilityPayments.first().paymentAmountCurrency
         }
         is UtilityPayment -> {
             title = this.utility.name
-            subtitle = UiText.StringResourceId(this.getTransactionName()).asString()
+            subtitle = this.getTransactionName()
             amount = this.paymentAmount
             currency = this.paymentAmountCurrency
         }
@@ -92,6 +103,7 @@ fun Transaction.toTransactionListItem(): TransactionListItem {
         transactionNumber = this.transactionNumber,
         date = this.date,
         title = title,
+//        subtitle = subtitle.asString(),
         subtitle = subtitle,
         amount = amount,
         currency = currency,
@@ -126,4 +138,8 @@ fun Transaction.getTransactionIcon(): DrawableResource {
         is UtilityGroupPayment -> SharedRes.drawable.ic_transfer_to_card
         is UtilityPayment -> SharedRes.drawable.ic_transfer_to_card
     }
+}
+
+suspend fun List<Transaction>.toTransactionListItems() = this.map { transaction ->
+    transaction.toTransactionListItem()
 }
