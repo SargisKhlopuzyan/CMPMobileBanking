@@ -30,6 +30,51 @@ class TransactionsViewModel(
         _uiState.value
     )
 
+    fun onAction(action: TransactionsAction) {
+        when (action) {
+            TransactionsAction.OnStartTransactionsSearch -> startTransactionsSearch()
+            is TransactionsAction.OnSearchTransactions -> searchTransactions(action.text)
+            TransactionsAction.OnCloseTransactionsSearch -> closeTransactionSearch()
+            is TransactionsAction.OnTransactionClicked -> {}
+        }
+    }
+
+    private fun startTransactionsSearch() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isSearchActive = true
+            )
+        }
+    }
+
+    private fun closeTransactionSearch() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isSearchActive = false,
+                searchQuery = "",
+                filteredTransactions = currentState.transactions
+            )
+        }
+    }
+
+    private fun searchTransactions(search: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                searchQuery = search,
+                filteredTransactions = currentState.transactions.findMatches(search)
+            )
+        }
+    }
+
+    fun List<TransactionListItem>.findMatches(query: String): List<TransactionListItem> {
+        return this.filter {
+            it.title.contains(query, ignoreCase = true) ||
+                    it.subtitle.contains(query, ignoreCase = true) ||
+                    it.amount.toString().contains(query, ignoreCase = true) ||
+                    it.date.contains(query, ignoreCase = true)
+        }
+    }
+
     private fun getTransactions() {
         viewModelScope.launch {
             _uiState.update { currentState ->
@@ -37,9 +82,11 @@ class TransactionsViewModel(
             }
             getTransactionsUseCase().onSuccess { transactions ->
                 _uiState.update { currentState ->
+                    val transactionListItems = transactions.toTransactionListItems()
                     currentState.copy(
                         isLoading = false,
-                        transactions = transactions.toTransactionListItems()
+                        transactions = transactionListItems,
+                        filteredTransactions = transactionListItems
                     )
                 }
             }.onError { error ->
