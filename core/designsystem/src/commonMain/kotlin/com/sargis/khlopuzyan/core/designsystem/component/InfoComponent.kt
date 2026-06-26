@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.material3.Icon
@@ -20,7 +22,7 @@ import com.sargis.khlopuzyan.core.designsystem.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun EmptyResultComponent(
+fun InfoComponent(
     modifier: Modifier = Modifier.fillMaxSize(),
     image: @Composable () -> Unit? = {
         Icon(
@@ -42,25 +44,26 @@ fun EmptyResultComponent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
         image()
         content()
     }
 }
 
-@Preview(name = "EmptyResultComponent - Dark", showBackground = true)
+@Preview(name = "InfoComponent - Dark", showBackground = true)
 @Composable
-fun EmptyResultComponentDarkPreview() {
+fun InfoComponentDarkPreview() {
     AppTheme(darkTheme = true) {
-        EmptyResultComponent()
+        InfoComponent()
     }
 }
 
-@Preview(name = "EmptyResultComponent - Light", showBackground = true)
+@Preview(name = "InfoComponent - Light", showBackground = true)
 @Composable
-fun EmptyResultComponentLightPreview() {
+fun InfoComponentLightPreview() {
     AppTheme(darkTheme = false) {
-        EmptyResultComponent()
+        InfoComponent()
     }
 }
 

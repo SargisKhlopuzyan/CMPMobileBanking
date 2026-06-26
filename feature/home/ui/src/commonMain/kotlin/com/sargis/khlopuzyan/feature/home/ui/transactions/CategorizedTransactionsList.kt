@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 fun CategorizedTransactionsList(
     modifier: Modifier = Modifier,
     transactions: List<TransactionListItem>,
+    onItemClick: (TransactionListItem) -> Unit
 ) {
     LazyColumn(modifier) {
         transactions.sortedBy {
@@ -27,6 +28,9 @@ fun CategorizedTransactionsList(
                     modifier = Modifier.fillParentMaxWidth(),
                     isDarkTheme = isSystemInDarkTheme(),
                     transactionListItem = transaction,
+                    onItemClick = {
+                        onItemClick(transaction)
+                    }
                 )
             }
         }

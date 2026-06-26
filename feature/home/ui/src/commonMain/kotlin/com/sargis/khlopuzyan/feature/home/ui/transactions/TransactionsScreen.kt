@@ -1,6 +1,7 @@
 package com.sargis.khlopuzyan.feature.home.ui.transactions
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,12 +13,15 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
@@ -35,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sargis.khlopuzyan.core.designsystem.button.SelectableButton
-import com.sargis.khlopuzyan.core.designsystem.component.EmptyResultComponent
+import com.sargis.khlopuzyan.core.designsystem.component.InfoComponent
 import com.sargis.khlopuzyan.core.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.core.designsystem.resources.transactions
 import com.sargis.khlopuzyan.core.designsystem.theme.AppTheme
@@ -57,6 +61,7 @@ fun TransactionsScreen() {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionsScreenComponent(
     uiState: TransactionsState,
@@ -72,6 +77,7 @@ fun TransactionsScreenComponent(
     }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             Surface(
                 shadowElevation = 8.dp, // Adjust depth here
@@ -168,15 +174,15 @@ fun TransactionsScreenComponent(
         }
     ) {
         PullToRefreshBox(
+            modifier = Modifier
+                //.safeContentPadding()
+                .padding(it)
+                .fillMaxSize(),
             isRefreshing = uiState.isRefreshing,
             state = pullToRefreshState,
             onRefresh = {
                 onAction(TransactionsAction.OnRefreshTransactions)
             },
-            modifier = Modifier
-                //.safeContentPadding()
-                .padding(it)
-                .fillMaxSize()
         ) {
             Column(
                 modifier = Modifier
@@ -191,17 +197,58 @@ fun TransactionsScreenComponent(
                     onClick = { }
                 )
 
-                if (uiState.filteredTransactions.isNotEmpty()) {
-                    CategorizedTransactionsList(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(MaterialTheme.colorScheme.background),
-                        transactions = uiState.filteredTransactions
-                    )
+                if (uiState.filteredTransactions.isEmpty()) {
+                    if (uiState.error != null) {
+                        InfoComponent(
+                            content = {
+                                Text(
+                                    text = uiState.error.asString(),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        )
+                    } else {
+                        InfoComponent()
+                    }
                 } else {
-                    EmptyResultComponent(
-                        modifier = Modifier.fillMaxSize()
-                    )
+
+                    if (uiState.error != null) {
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            CategorizedTransactionsList(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(MaterialTheme.colorScheme.background),
+                                transactions = uiState.filteredTransactions,
+                                onItemClick = { transaction ->
+                                    onAction(TransactionsAction.OnTransactionClicked(transaction.transactionNumber))
+                                }
+                            )
+                            AlertDialog(
+                                onDismissRequest = {
+
+                                },
+                                text = { Text(uiState.error.asString()) },
+                                confirmButton = {
+                                    TextButton(onClick = {
+                                        onAction(TransactionsAction.OnDismissErrorDialog)
+                                    }) {
+                                        Text("Ok")
+                                    }
+                                }
+                            )
+                        }
+                    } else {
+                        CategorizedTransactionsList(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.background),
+                            transactions = uiState.filteredTransactions,
+                            onItemClick = { transaction ->
+                                onAction(TransactionsAction.OnTransactionClicked(transaction.transactionNumber))
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -215,7 +262,7 @@ private fun TransactionsScreenComponentPreview() {
         TransactionsScreenComponent(
             uiState = TransactionsState(
                 transactions = runBlocking {
-                    FakeTransactionsDataSource.getTransactions().data.map {
+                    FakeTransactionsDataSource.generateFakeTransactions().map {
                         it.toTransactionListItem()
                     }
                 }
@@ -231,7 +278,7 @@ private fun TransactionsScreenComponentDarkPreview() {
         TransactionsScreenComponent(
             uiState = TransactionsState(
                 transactions = runBlocking {
-                    FakeTransactionsDataSource.getTransactions().data.map {
+                    FakeTransactionsDataSource.generateFakeTransactions().map {
                         it.toTransactionListItem()
                     }
                 }

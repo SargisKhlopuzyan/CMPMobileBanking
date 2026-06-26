@@ -36,7 +36,16 @@ class TransactionsViewModel(
             is TransactionsAction.OnSearchTransactions -> searchTransactions(action.text)
             TransactionsAction.OnCloseTransactionsSearch -> closeTransactionSearch()
             TransactionsAction.OnRefreshTransactions -> fetchTransactions()
-            is TransactionsAction.OnTransactionClicked -> {}
+            is TransactionsAction.OnTransactionClicked -> {
+                //TODO-JUST FOR TEST
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        transactions = emptyList(),
+                        filteredTransactions = emptyList()
+                    )
+                }
+            }
+            TransactionsAction.OnDismissErrorDialog -> dismissErrorDialog()
         }
     }
 
@@ -73,7 +82,7 @@ class TransactionsViewModel(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    isRefreshing = true,
+                    isRefreshing = true
                 )
             }
             getTransactionsUseCase().onSuccess { transactions ->
@@ -81,6 +90,7 @@ class TransactionsViewModel(
                     val transactionListItems = transactions.toTransactionListItems()
                     currentState.copy(
                         isRefreshing = false,
+                        error = null,
                         transactions = transactionListItems,
                         filteredTransactions = transactionListItems.findMatches(
                             currentState.searchQuery
@@ -105,6 +115,15 @@ class TransactionsViewModel(
                     it.subtitle.contains(query, ignoreCase = true) ||
                     it.amount.toString().contains(query, ignoreCase = true) ||
                     it.date.contains(query, ignoreCase = true)
+        }
+    }
+
+    private fun dismissErrorDialog() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                error = null,
+                isRefreshing = false
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.sargis.khlopuzyan.core.fakeDataSource
 
+import com.sargis.khlopuzyan.core.domain.DataError
 import com.sargis.khlopuzyan.core.domain.Result
 import com.sargis.khlopuzyan.feature.home.domain.model.transactions.Currency
 import com.sargis.khlopuzyan.feature.home.domain.model.transactions.CurrencyExchange
@@ -16,9 +17,17 @@ import kotlin.time.Duration.Companion.milliseconds
 
 object FakeTransactionsDataSource {
 
-    suspend fun getTransactions() = Result.Success(generateFakeTransactions())
-    private suspend fun generateFakeTransactions(): List<Transaction> {
+    suspend fun getTransactions(): Result<List<Transaction>, DataError> {
         delay(Random.nextLong(500, 2000).milliseconds)
+        val isSuccess = Random.nextBoolean()
+        return if (isSuccess) {
+            Result.Success(generateFakeTransactions())
+        } else {
+            Result.Error(DataError.Remote.SERVER)
+        }
+    }
+
+    fun generateFakeTransactions(): List<Transaction> {
         return listOf(
             CurrencyExchange(
                 transactionNumber = 1001,
