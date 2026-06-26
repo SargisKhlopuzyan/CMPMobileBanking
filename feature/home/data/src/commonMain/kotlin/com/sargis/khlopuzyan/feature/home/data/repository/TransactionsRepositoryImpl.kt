@@ -11,7 +11,7 @@ class TransactionsRepositoryImpl(
     private val remoteTransactionsDataSource: KtorRemoteTransactionsDataSource,
     private val fakeTransactionsDataSource: FakeTransactionsDataSource,
 ) : TransactionsRepository {
-    override suspend fun getTransactions(): Result<List<Transaction>, DataError> {
+    override suspend fun  getTransactions(): Result<List<Transaction>, DataError> {
         return fakeTransactionsDataSource.getTransactions()
     }
 }

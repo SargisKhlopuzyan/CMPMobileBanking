@@ -22,6 +22,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,6 +62,7 @@ fun TransactionsScreenComponent(
     uiState: TransactionsState,
     onAction: (TransactionsAction) -> Unit = {}
 ) {
+    val pullToRefreshState = rememberPullToRefreshState()
     val focusRequester = remember { FocusRequester() }
 
     LaunchedEffect(uiState.isSearchActive) {
@@ -164,30 +167,42 @@ fun TransactionsScreenComponent(
             }
         }
     ) {
-        Column(
+        PullToRefreshBox(
+            isRefreshing = uiState.isRefreshing,
+            state = pullToRefreshState,
+            onRefresh = {
+                onAction(TransactionsAction.OnRefreshTransactions)
+            },
             modifier = Modifier
                 //.safeContentPadding()
                 .padding(it)
                 .fillMaxSize()
         ) {
-            SelectableButton(
-                text = "Current month",
-                selected = true,
-                modifier = Modifier.wrapContentSize().padding(horizontal = 12.dp, vertical = 12.dp),
-                onClick = { }
-            )
+            Column(
+                modifier = Modifier
+                    //.padding(it)
+                    .fillMaxSize()
+            ) {
+                SelectableButton(
+                    text = "Current month",
+                    selected = true,
+                    modifier = Modifier.wrapContentSize()
+                        .padding(horizontal = 12.dp, vertical = 12.dp),
+                    onClick = { }
+                )
 
-            if (uiState.filteredTransactions.isNotEmpty()) {
-                CategorizedTransactionsList(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background),
-                    transactions = uiState.filteredTransactions
-                )
-            } else {
-                EmptyResultComponent(
-                    modifier = Modifier.fillMaxSize()
-                )
+                if (uiState.filteredTransactions.isNotEmpty()) {
+                    CategorizedTransactionsList(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.background),
+                        transactions = uiState.filteredTransactions
+                    )
+                } else {
+                    EmptyResultComponent(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
     }
@@ -199,8 +214,8 @@ private fun TransactionsScreenComponentPreview() {
     AppTheme {
         TransactionsScreenComponent(
             uiState = TransactionsState(
-                transactions = FakeTransactionsDataSource.getTransactions().data.map {
-                    runBlocking {
+                transactions = runBlocking {
+                    FakeTransactionsDataSource.getTransactions().data.map {
                         it.toTransactionListItem()
                     }
                 }
@@ -215,8 +230,8 @@ private fun TransactionsScreenComponentDarkPreview() {
     AppTheme(darkTheme = true) {
         TransactionsScreenComponent(
             uiState = TransactionsState(
-                transactions = FakeTransactionsDataSource.getTransactions().data.map {
-                    runBlocking {
+                transactions = runBlocking {
+                    FakeTransactionsDataSource.getTransactions().data.map {
                         it.toTransactionListItem()
                     }
                 }

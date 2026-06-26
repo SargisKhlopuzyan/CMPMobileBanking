@@ -23,7 +23,7 @@ class TransactionsViewModel(
 
     @NativeCoroutinesState
     val uiState = _uiState.onStart {
-        getTransactions()
+        fetchTransactions()
     }.stateIn(
         viewModelScope.coroutineScope,
         SharingStarted.WhileSubscribed(5_000L),
@@ -35,6 +35,7 @@ class TransactionsViewModel(
             TransactionsAction.OnStartTransactionsSearch -> startTransactionsSearch()
             is TransactionsAction.OnSearchTransactions -> searchTransactions(action.text)
             TransactionsAction.OnCloseTransactionsSearch -> closeTransactionSearch()
+            TransactionsAction.OnRefreshTransactions -> fetchTransactions()
             is TransactionsAction.OnTransactionClicked -> {}
         }
     }
@@ -42,7 +43,9 @@ class TransactionsViewModel(
     private fun startTransactionsSearch() {
         _uiState.update { currentState ->
             currentState.copy(
-                isSearchActive = true
+                isSearchActive = true,
+                searchQuery = "",
+                filteredTransactions = currentState.transactions
             )
         }
     }
@@ -66,37 +69,42 @@ class TransactionsViewModel(
         }
     }
 
-    fun List<TransactionListItem>.findMatches(query: String): List<TransactionListItem> {
-        return this.filter {
-            it.title.contains(query, ignoreCase = true) ||
-                    it.subtitle.contains(query, ignoreCase = true) ||
-                    it.amount.toString().contains(query, ignoreCase = true) ||
-                    it.date.contains(query, ignoreCase = true)
-        }
-    }
-
-    private fun getTransactions() {
+    private fun fetchTransactions() {
         viewModelScope.launch {
             _uiState.update { currentState ->
-                currentState.copy(isLoading = true)
+                currentState.copy(
+                    isRefreshing = true,
+                )
             }
             getTransactionsUseCase().onSuccess { transactions ->
                 _uiState.update { currentState ->
                     val transactionListItems = transactions.toTransactionListItems()
                     currentState.copy(
-                        isLoading = false,
+                        isRefreshing = false,
                         transactions = transactionListItems,
-                        filteredTransactions = transactionListItems
+                        filteredTransactions = transactionListItems.findMatches(
+                            currentState.searchQuery
+                        )
                     )
                 }
             }.onError { error ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        isLoading = false,
+                        isRefreshing = false,
                         error = UiText.DynamicString(error.toString())
                     )
                 }
             }
+        }
+    }
+
+    private fun List<TransactionListItem>.findMatches(query: String): List<TransactionListItem> {
+        if (query.isEmpty()) return this
+        return this.filter {
+            it.title.contains(query, ignoreCase = true) ||
+                    it.subtitle.contains(query, ignoreCase = true) ||
+                    it.amount.toString().contains(query, ignoreCase = true) ||
+                    it.date.contains(query, ignoreCase = true)
         }
     }
 }
