@@ -7,6 +7,7 @@ import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import com.rickclephas.kmp.observableviewmodel.launch
 import com.sargis.khlopuzyan.core.domain.onError
 import com.sargis.khlopuzyan.core.domain.onSuccess
+import com.sargis.khlopuzyan.core.ui.LoadingState
 import com.sargis.khlopuzyan.core.ui.UiText
 import com.sargis.khlopuzyan.feature.home.domain.usecase.GetTransactionsUseCase
 import com.sargis.khlopuzyan.feature.home.ui.util.toTransactionListItems
@@ -23,7 +24,7 @@ class TransactionsViewModel(
 
     @NativeCoroutinesState
     val uiState = _uiState.onStart {
-        fetchTransactions()
+        fetchTransactions(LoadingState.LOADING)
     }.stateIn(
         viewModelScope.coroutineScope,
         SharingStarted.WhileSubscribed(5_000L),
@@ -35,11 +36,12 @@ class TransactionsViewModel(
             TransactionsAction.OnStartTransactionsSearch -> startTransactionsSearch()
             is TransactionsAction.OnSearchTransactions -> searchTransactions(action.text)
             TransactionsAction.OnCloseTransactionsSearch -> closeTransactionSearch()
-            TransactionsAction.OnRefreshTransactions -> fetchTransactions()
+            TransactionsAction.OnRefreshTransactions -> fetchTransactions(LoadingState.REFRESHING)
             is TransactionsAction.OnTransactionClicked -> {
                 //TODO-JUST FOR TEST
                 _uiState.update { currentState ->
                     currentState.copy(
+                        error = null,
                         transactions = emptyList(),
                         filteredTransactions = emptyList()
                     )
@@ -78,18 +80,18 @@ class TransactionsViewModel(
         }
     }
 
-    private fun fetchTransactions() {
+    private fun fetchTransactions(loadingState: LoadingState) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    isRefreshing = true
+                    loadingState = loadingState
                 )
             }
             getTransactionsUseCase().onSuccess { transactions ->
                 _uiState.update { currentState ->
                     val transactionListItems = transactions.toTransactionListItems()
                     currentState.copy(
-                        isRefreshing = false,
+                        loadingState = LoadingState.LOADED,
                         error = null,
                         transactions = transactionListItems,
                         filteredTransactions = transactionListItems.findMatches(
@@ -100,7 +102,7 @@ class TransactionsViewModel(
             }.onError { error ->
                 _uiState.update { currentState ->
                     currentState.copy(
-                        isRefreshing = false,
+                        loadingState = LoadingState.LOADED,
                         error = UiText.DynamicString(error.toString())
                     )
                 }
@@ -122,7 +124,7 @@ class TransactionsViewModel(
         _uiState.update { currentState ->
             currentState.copy(
                 error = null,
-                isRefreshing = false
+                loadingState = LoadingState.LOADED
             )
         }
     }

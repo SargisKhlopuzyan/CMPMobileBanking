@@ -115,10 +115,6 @@ dependencies {
     androidRuntimeClasspath(libs.compose.uiTooling)
 }
 
-dependencies {
-    androidRuntimeClasspath(libs.compose.uiTooling)
-}
-
 compose.resources {
     publicResClass = true
     packageOfResClass = "com.sargis.khlopuzyan.core.designsystem.resources"

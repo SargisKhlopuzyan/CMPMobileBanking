@@ -23,7 +23,7 @@ object FakeTransactionsDataSource {
         return if (isSuccess) {
             Result.Success(generateFakeTransactions())
         } else {
-            Result.Error(DataError.Remote.SERVER)
+            Result.Error(DataError.Remote.entries.random())
         }
     }
 

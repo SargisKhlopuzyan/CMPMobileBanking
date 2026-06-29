@@ -1,7 +1,5 @@
 package com.sargis.khlopuzyan.core.designsystem.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +10,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,46 +20,41 @@ import com.sargis.khlopuzyan.core.designsystem.resources.no_data_available
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun InfoComponent(
-    modifier: Modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
-    image: @Composable () -> Unit? = {
-        Icon(
-            modifier = Modifier.size(120.dp),
-            imageVector = Icons.Default.SearchOff,
-            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-            contentDescription = null
-        )
-    },
-    content: @Composable () -> Unit? = {
-        Text(
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            text = stringResource(SharedRes.string.no_data_available)
-        )
-    }
+fun FullScreenEmptyContent(
+    modifier: Modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
 ) {
-    Column(
+    InfoComponent(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        image()
-        content()
-    }
+        image = {
+            Icon(
+                modifier = Modifier.size(120.dp),
+                imageVector = Icons.Default.SearchOff,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                contentDescription = null
+            )
+        },
+        content = {
+            Text(
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                text = stringResource(SharedRes.string.no_data_available)
+            )
+        }
+    )
 }
 
 @Preview(name = "InfoComponent - Dark", showBackground = true)
 @Composable
-fun InfoComponentDarkPreview() {
+fun FullScreenEmptyContentDarkPreview() {
     AppThemeDarkPreview {
-        InfoComponent()
+        FullScreenEmptyContent()
     }
 }
 
 @Preview(name = "InfoComponent - Light", showBackground = true)
 @Composable
-fun InfoComponentLightPreview() {
+fun FullScreenEmptyContentLightPreview() {
     AppThemeLightPreview {
-        InfoComponent()
+        FullScreenEmptyContent()
     }
 }

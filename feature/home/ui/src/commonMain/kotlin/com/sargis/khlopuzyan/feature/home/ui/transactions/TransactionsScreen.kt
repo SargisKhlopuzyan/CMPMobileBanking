@@ -19,6 +19,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -39,13 +43,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sargis.khlopuzyan.core.designsystem.button.SelectableButton
-import com.sargis.khlopuzyan.core.designsystem.component.InfoComponent
+import com.sargis.khlopuzyan.core.designsystem.component.FullScreenEmptyContent
+import com.sargis.khlopuzyan.core.designsystem.component.FullScreenErrorComponent
+import com.sargis.khlopuzyan.core.designsystem.component.FullScreenLoading
 import com.sargis.khlopuzyan.core.designsystem.resources.SharedRes
 import com.sargis.khlopuzyan.core.designsystem.resources.transactions
 import com.sargis.khlopuzyan.core.designsystem.theme.AppTheme
 import com.sargis.khlopuzyan.core.designsystem.theme.Transparent
 import com.sargis.khlopuzyan.core.fakeDataSource.FakeTransactionsDataSource
+import com.sargis.khlopuzyan.core.ui.LoadingState
 import com.sargis.khlopuzyan.feature.home.ui.util.toTransactionListItem
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -67,6 +75,9 @@ fun TransactionsScreenComponent(
     uiState: TransactionsState,
     onAction: (TransactionsAction) -> Unit = {}
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
     val pullToRefreshState = rememberPullToRefreshState()
     val focusRequester = remember { FocusRequester() }
 
@@ -171,83 +182,123 @@ fun TransactionsScreenComponent(
                     )
                 )
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         }
     ) {
-        PullToRefreshBox(
-            modifier = Modifier
-                //.safeContentPadding()
-                .padding(it)
-                .fillMaxSize(),
-            isRefreshing = uiState.isRefreshing,
-            state = pullToRefreshState,
-            onRefresh = {
-                onAction(TransactionsAction.OnRefreshTransactions)
-            },
-        ) {
-            Column(
+        val message = "LOADING: ${uiState.loadingState}\nERROR: ${uiState.error?.asString()}"
+        coroutineScope.launch {
+            snackbarHostState.currentSnackbarData?.dismiss()
+            snackbarHostState.showSnackbar(
+                message = message,
+                withDismissAction = true,
+                duration = SnackbarDuration.Short
+            )
+        }
+        Box(modifier = Modifier.fillMaxSize()) {
+            PullToRefreshBox(
                 modifier = Modifier
-                    //.padding(it)
-                    .fillMaxSize()
+                    //.safeContentPadding()
+                    .padding(it)
+                    .fillMaxSize(),
+                isRefreshing = uiState.loadingState == LoadingState.REFRESHING,
+                state = pullToRefreshState,
+                onRefresh = {
+                    onAction(TransactionsAction.OnRefreshTransactions)
+                },
             ) {
-                SelectableButton(
-                    text = "Current month",
-                    selected = true,
-                    modifier = Modifier.wrapContentSize()
-                        .padding(horizontal = 12.dp, vertical = 12.dp),
-                    onClick = { }
-                )
+                Column(
+                    modifier = Modifier
+                        //.padding(it)
+                        .fillMaxSize()
+                ) {
+                    SelectableButton(
+                        text = "Current month",
+                        selected = true,
+                        modifier = Modifier.wrapContentSize()
+                            .padding(horizontal = 12.dp, vertical = 12.dp),
+                        onClick = { }
+                    )
 
-                if (uiState.filteredTransactions.isEmpty()) {
-                    if (uiState.error != null) {
-                        InfoComponent(
-                            content = {
-                                Text(
-                                    text = uiState.error.asString(),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    when (uiState.loadingState) {
+                        LoadingState.NOT_STARTED -> {
+
+                        }
+                        LoadingState.LOADING -> {
+                            FullScreenLoading()
+                        }
+                        LoadingState.REFRESHING -> {
+                            if (uiState.filteredTransactions.isNotEmpty()) {
+                                CategorizedTransactionsList(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(MaterialTheme.colorScheme.background),
+                                    transactions = uiState.filteredTransactions,
+                                    onItemClick = { transaction ->
+                                        onAction(
+                                            TransactionsAction.OnTransactionClicked(
+                                                transaction.transactionNumber
+                                            )
+                                        )
+                                    }
                                 )
-                            }
-                        )
-                    } else {
-                        InfoComponent()
-                    }
-                } else {
-
-                    if (uiState.error != null) {
-                        Box(modifier = Modifier.fillMaxSize()) {
-                            CategorizedTransactionsList(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(MaterialTheme.colorScheme.background),
-                                transactions = uiState.filteredTransactions,
-                                onItemClick = { transaction ->
-                                    onAction(TransactionsAction.OnTransactionClicked(transaction.transactionNumber))
+                            } else {
+                                if (uiState.error != null) {
+                                    FullScreenErrorComponent(
+                                        text = uiState.error.asString()
+                                    )
+                                } else {
+                                    FullScreenEmptyContent()
                                 }
-                            )
-                            AlertDialog(
-                                onDismissRequest = {
+                            }
+                        }
+                        LoadingState.LOADED -> {
+                            if (uiState.filteredTransactions.isNotEmpty()) {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    CategorizedTransactionsList(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .background(MaterialTheme.colorScheme.background),
+                                        transactions = uiState.filteredTransactions,
+                                        onItemClick = { transaction ->
+                                            onAction(
+                                                TransactionsAction.OnTransactionClicked(
+                                                    transaction.transactionNumber
+                                                )
+                                            )
+                                        }
+                                    )
 
-                                },
-                                text = { Text(uiState.error.asString()) },
-                                confirmButton = {
-                                    TextButton(onClick = {
-                                        onAction(TransactionsAction.OnDismissErrorDialog)
-                                    }) {
-                                        Text("Ok")
+                                    if (uiState.error != null) {
+                                        AlertDialog(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 16.dp),
+                                            onDismissRequest = {
+
+                                            },
+                                            text = { Text(uiState.error.asString()) },
+                                            confirmButton = {
+                                                TextButton(onClick = {
+                                                    onAction(TransactionsAction.OnDismissErrorDialog)
+                                                }) {
+                                                    Text("Ok")
+                                                }
+                                            }
+                                        )
                                     }
                                 }
-                            )
-                        }
-                    } else {
-                        CategorizedTransactionsList(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(MaterialTheme.colorScheme.background),
-                            transactions = uiState.filteredTransactions,
-                            onItemClick = { transaction ->
-                                onAction(TransactionsAction.OnTransactionClicked(transaction.transactionNumber))
+                            } else {
+                                if (uiState.error != null) {
+                                    FullScreenErrorComponent(
+                                        text = uiState.error.asString()
+                                    )
+                                } else {
+                                    FullScreenEmptyContent()
+                                }
                             }
-                        )
+                        }
                     }
                 }
             }
